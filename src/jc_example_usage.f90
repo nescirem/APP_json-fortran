@@ -8,9 +8,8 @@
 #ifdef ASSEMBLAGE
 program jc_example_usage
     
-    !use, intrinsic :: iso_fortran_env,  only: error_unit, output_unit
-    use jc_grid_control_mod,            only: jc_grid_control
-    !use jc_grid_additional_mod,         only: jc_grid_additional
+    use, intrinsic :: iso_fortran_env,  only: output_unit
+    use jc_CAA_mod
     use common_data,                    only: error_code,dir,filename
     use functions,                      only: clean_str
     
@@ -26,8 +25,12 @@ program jc_example_usage
     !call read_cgns
     
     ! input additional grid info
-    !call jc_grid_additional
+    call jc_grid_additional
     
+    ! input zone settings
+    call jc_zone
+    
+    write( output_unit,"(A)" ) 'Done.'
     
 end program jc_example_usage
 #endif

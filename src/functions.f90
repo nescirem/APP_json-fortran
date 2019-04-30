@@ -7,9 +7,15 @@ module functions
     
     implicit none
     
-    contains
+contains
+    !====================================================================
     
-    function clean_str(string)
+    !-------------------------------------------------------------------+
+    function clean_str(string)                                          !
+    ! remove leading and trailing blank characters of a string          !
+    !-------------------------------------------------------------------+
+        
+        implicit none
     
         character(:), allocatable   :: clean_str
         character(len=*)            :: string
@@ -17,5 +23,8 @@ module functions
         clean_str = trim(adjustl(string))
     
     end function clean_str
+    
+    !====================================================================
+    
     
 end module functions

@@ -2,18 +2,30 @@
 !> author: nescirem
 !  date: 04/28/2019
 !
+!  Module of parameters
 !  Module of shared common data.
 !
-
+    module parameters
+    
+    implicit none
+    
+    integer,parameter       :: dp = kind(1.0d0)
+    integer,parameter       :: sp = kind(1.0e0)
+    
+    end module parameters
+    
+    
     module common_data
+    
+        use parameters
     
         implicit none
         
         integer                                     :: error_code = 0
         
         ! working directory and control file name
-        character(:), allocatable                   :: dir           ! working directory
-        character(:), allocatable                   :: filename      ! control file to read
+        character(:),allocatable                    :: dir          ! working directory
+        character(:),allocatable                    :: filename     ! control file to read
         
         ! grid file data
         integer                                     :: n_grid
@@ -22,11 +34,23 @@
         
         ! zone data
         integer                                     :: n_zone
-        character(len=32),pointer,dimension(:)      :: zone_id !! max zone id never >= 1x10e33
+        character(len=32),pointer,dimension(:)      :: zone_id      ! max zone id never >= 1x10e33
         character(len=128),pointer,dimension(:)     :: zone_name
         integer,pointer,dimension(:)                :: zone_type
         
         ! grid infomation
-        logical                                     :: threeD,twoD
+        logical                                     :: threeD=.false.,twoD=.false.,&
+                                                        AXI2D=.false.,REVOLVE=.false.
+        real(dp)                                    :: scale
+        logical                                     :: have_interior_face
+        integer                                     :: n_interface_pair,n_cycle_face_pair
+        
+        ! zone information
+        integer                                     :: n_phase
+        character(len=128),pointer,dimension(:)     :: zone_material_id
+        logical                                     :: is_homogeneous
+        
+        
+        
         
     end module common_data

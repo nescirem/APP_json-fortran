@@ -9,6 +9,7 @@ module jf_to_map_mod
     use json_module, CK => json_CK, IK => json_IK, LK => json_LK
     use, intrinsic :: iso_fortran_env,  only: error_unit, output_unit
     use common_data,                    only: error_code,n_zone,zone_name,zone_type,zone_id
+    use functions,                      only: clean_str
 
     implicit none
 
@@ -33,7 +34,7 @@ contains
     integer                     :: i            !! counter
     character(len=16)           :: i_str
     integer(IK)                 :: var_type
-    character(kind=CK,len=:),allocatable        :: zone_c_temp
+    character(kind=CK,len=:),allocatable        :: str_temp
     logical                                     :: found
     
     
@@ -46,7 +47,7 @@ contains
     error_code = error_code+1
     if ( json%failed() ) then
         call json%print_error_message( error_unit )
-        call error_out( '' )
+        call error_out( 'An error occurred during parse JSON file' )
     else ! print the parsed data to the console
         write( error_unit,'(A)' ) ''
         write( error_unit,'(A)') 'printing the file...'
@@ -71,22 +72,23 @@ contains
     do i=1,n_zone
         write( i_str,* ) i
         call core%get( p,'@('//trim(i_str)//')',p_temp )
-        call core%info( p_temp, name=zone_c_temp )
-        write( zone_id(i),'(A)' ) zone_c_temp
+        if ( core%failed() ) call core%print_error_message( error_unit )
+        call core%info( p_temp, name=str_temp )
+        write( zone_id(i),'(A)' ) str_temp
     end do
     
     do i=1,n_zone
         
-        call json%get( 'grid.'//trim(zone_id(i))//'.name', zone_c_temp, found )
-        if ( found ) write( zone_name(i),* ) zone_c_temp
+        call json%get( 'grid.'//trim(zone_id(i))//'.name', str_temp, found )
+        if ( found ) write( zone_name(i),* ) str_temp
         
-        call json%get( 'grid.'//trim(zone_id(i))//'.type', zone_c_temp, found )
+        call json%get( 'grid.'//trim(zone_id(i))//'.type', str_temp, found )
         
         error_code = error_code+1
         if ( .not.found ) call error_out( 'Must specify zone type, please check: grid.zone.[zone_id].type' )
         
         error_code = error_code+1
-        select case ( zone_c_temp )
+        select case ( str_temp )
         case ( 'fluid' )
             zone_type(i) = 1
         case ( 'solid' )
@@ -96,13 +98,14 @@ contains
         case ( 'acoustic' )
             zone_type(i) = 6
         case default
-            call error_out( 'Unknown zone type '//zone_c_temp//', please check: grid.zone.[zone_id].type' )
+            call error_out( 'Unknown zone type '//str_temp//', please check: grid.zone.[zone_id].type' )
         end select
         
     end do
     
     ! clean up
     call core%destroy()
+    if ( core%failed() ) call core%print_error_message( error_unit )
     call json%destroy()
     if ( json%failed() ) call json%print_error_message( error_unit )
     !call error_out( '' )

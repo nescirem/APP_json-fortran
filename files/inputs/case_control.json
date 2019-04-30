@@ -11,17 +11,8 @@
 			"fileType": "cgns",
 			"zone": {
 				! zone Type, one of fluid | solid | acoustic
-				"11":{"name": "air",    "type": "acoustic"},
-				"12":{"name": "porous", "type": "acoustic"}
-			}
-		},
-		{
-			"fileName": "case.cgns",
-			"fileType": "cgns",
-			"zone": {
-				! zone Type, one of fluid | solid | acoustic
-				"13":{"name": "air",    "type": "acoustic"},
-				"14":{"name": "porous", "type": "acoustic"}
+				"11":{"name": "air","type": "acoustic"},
+				"12":{"name": "porous", "type": "acoustic","numPhases": 1,"isHomogeneous": true}
 			}
 		}
 	],
@@ -29,8 +20,6 @@
 		"space": "3D",
 		! space type, one of AXI2D | 3D | 2D | REVOLVE
 		"scale": 1.0e0,
-		"numPhases": 1,
-		"isHomogeneous": true,
 		"haveInteriorFace": false,
 		"numPairInterface": 1,
 		"numPairCyclePair": 0
@@ -49,8 +38,8 @@
 		! problem type, one of CFD | ASI
 		"asiSetting": {
 			"zone": {
-				"11": { "materials":"311", "problem":"WavePropagation in air" },
-				"12": { "materials":"312", "problem":"WavePropagation in porous" }
+				"11": { "problem":"WavePropagation in air" },
+				"12": { "problem":"WavePropagation in porous" }
 			}
 		}
 	},
@@ -70,6 +59,10 @@
 			"12": {"gradient": "linear", "deltaT": 1e-6}
         }
     },
+	"zone": {
+		"11": {"material":"311","isHomogeneous": true},
+		"12": {"material":"312","isHomogeneous": true}
+	},
 	"boundary": {
         "in": 	 {
 			"id": "1011","type": "acousticSource",
