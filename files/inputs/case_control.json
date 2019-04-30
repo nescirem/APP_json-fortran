@@ -1,0 +1,86 @@
+! createdDate:  2018-12-24T03:24:00
+! modifiedDate: 2019-04-28T20:29:00
+{
+	"log": {
+        "logPath": "./",
+        "logLevel": "warning"
+    },
+	"grid": [
+		{
+			"fileName": "case.cgns",
+			"fileType": "cgns",
+			"zone": {
+				! zone Type, one of fluid | solid | acoustic
+				"11":{"name": "air",    "type": "acoustic"},
+				"12":{"name": "porous", "type": "acoustic"}
+			}
+		},
+		{
+			"fileName": "case.cgns",
+			"fileType": "cgns",
+			"zone": {
+				! zone Type, one of fluid | solid | acoustic
+				"13":{"name": "air",    "type": "acoustic"},
+				"14":{"name": "porous", "type": "acoustic"}
+			}
+		}
+	],
+	"additionalGridInfo": {
+		"space": "3D",
+		! space type, one of AXI2D | 3D | 2D | REVOLVE
+		"scale": 1.0e0,
+		"numPhases": 1,
+		"isHomogeneous": true,
+		"haveInteriorFace": false,
+		"numPairInterface": 1,
+		"numPairCyclePair": 0
+	},
+	"parallel": {},
+	"material": {
+		"311": {"name": "air","rho": 1.226, "acousticVelocity": 340},
+		"312": {
+			"name": "porous","rho": 1.226, "structureConstant": 3.0, 
+			"flowResistance": 2000.0,"porousity": 0.3,"heatCapacityRatio": 1.4,
+			"ambientPressure": 101215
+		}
+	},
+	"solver": {
+		"problemType": "Acoustic Solid Interaction", ! or ASI
+		! problem type, one of CFD | ASI
+		"asiSetting": {
+			"zone": {
+				"11": { "materials":"311", "problem":"WavePropagation in air" },
+				"12": { "materials":"312", "problem":"WavePropagation in porous" }
+			}
+		}
+	},
+	"strategy": {
+        "time": {
+            "formulation": "explicit",
+            "settings": {
+                "timeStart": 0.0,
+                "timeEnd": 1.0
+            }
+        },
+		"deltaT": 1e-6,
+        "gradient": "linear",
+        ! OR set each zone separately, which will replace the overall settings
+		"zones": {
+            "11": {"gradient": "linear", "deltaT": 1e-6},
+			"12": {"gradient": "linear", "deltaT": 1e-6}
+        }
+    },
+	"boundary": {
+        "in": 	 {
+			"id": "1011","type": "acousticSource",
+			"acousticSourceSetting": {"type": "gauss pulse", "amplitude": 1, "frequency": 8000}
+		},
+        "wall_a":{"id": "1012","type": "hard wall"},
+		"inf_a": {"id": "1013","type": "interface","correspondingFace":"inf_p","isCorrespondenceNode": true},
+        "inf_p": {"id": "1014","type": "interface","correspondingFace":"inf_a","isCorrespondenceNode": true},
+        "wall_p":{"id": "1015","type": "hard wall"},
+		"out":	 {"id": "1016","type": "transmissive"},
+    },
+	"initialize": {"haveFiledSource":true},
+	"output": {}
+}

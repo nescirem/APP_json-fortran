@@ -1,0 +1,7 @@
+! createdDate:  2019-04-28T16:05:00
+{
+	"grid": {
+		"11":{"name": "air",    "type": "acoustic"},
+		"22":{"name": "porous", "type": "acoustic"}
+	}
+}
