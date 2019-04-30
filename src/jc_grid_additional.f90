@@ -8,7 +8,7 @@
 module jc_grid_additional_mod
 
     use json_module, CK => json_CK, IK => json_IK, LK => json_LK
-    use, intrinsic :: iso_fortran_env,  only: error_unit, output_unit
+    use, intrinsic :: iso_fortran_env,  only: error_unit
     use common_data,    only: dir,filename,error_code,&
                             grid_file,grid_type
                                         

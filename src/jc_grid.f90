@@ -7,7 +7,7 @@
 module jc_grid_control_mod
 
     use json_module, CK => json_CK, IK => json_IK, LK => json_LK
-    use, intrinsic :: iso_fortran_env,  only: error_unit, output_unit
+    use, intrinsic :: iso_fortran_env,  only: error_unit
     use common_data,                    only: dir,filename,error_code,&
                                             grid_file,grid_type
     use functions,                      only: clean_str
@@ -160,28 +160,9 @@ contains
     
     ! parase zone settings
     do i=1,n_zone
-        
         call core%get( p_lower_1, clean_str(zone_id(i))//'.name', str_temp, found )
         if ( core%failed() ) call core%print_error_message( error_unit )
         if ( found ) write( zone_name(i),* ) str_temp
-        
-        call core%get( p_lower_1, clean_str(zone_id(i))//'.type', str_temp, found )
-        if ( core%failed() ) call core%print_error_message( error_unit )
-        error_code = error_code+1
-        if ( .not.found ) call error_out( 'Must specify zone type, please check: grid.zone.[zone_id].type' )
-        select case ( str_temp )
-        case ( 'fluid' )
-            zone_type(i) = 1
-        case ( 'solid' )
-            zone_type(i) = 2
-        case ( 'damping' )
-            zone_type(i) = 3
-        case ( 'acoustic' )
-            zone_type(i) = 6
-        case default
-            call error_out( 'Unknown zone type "'//str_temp//'", please check: grid.zone.[zone_id].type' )
-        end select
-        
     end do
     call progress_out
     
@@ -279,7 +260,7 @@ contains
     if ( .not.is_unique ) call error_out( 'Zone ID must be unique.' )
     call progress_out
     
-    ! parase zone settings
+    ! parase zone name
     i_zone = 0
     do i_grid=1, n_grid
         write( i_str,* ) i_grid
@@ -292,29 +273,7 @@ contains
             call core%get( p_lower_1, clean_str(zone_id(i_zone))//'.name', str_temp, found )
             if ( core%failed() ) call core%print_error_message( error_unit )
             if ( found ) write( zone_name(i_zone),* ) str_temp
-        
-            call core%get( p_lower_1, clean_str(zone_id(i_zone))//'.type', str_temp, found )
-            if ( core%failed() ) call core%print_error_message( error_unit )
-            
-            error_code = error_code+1
-            if ( .not.found ) call error_out( 'Must specify zone type, please check: grid.zone.[zone_id].type' )
-            
-            error_code = error_code+1
-            select case ( str_temp )
-            case ( 'fluid' )
-                zone_type(i_zone) = 1
-            case ( 'solid' )
-                zone_type(i_zone) = 2
-            case ( 'damping' )
-                zone_type(i_zone) = 3
-            case ( 'acoustic' )
-                zone_type(i_zone) = 6
-            case default
-                call error_out( 'Unknown zone type "'//str_temp//'", please check: grid.zone.[zone_id].type' )
-            end select
-        
         end do
-        
     end do
     call progress_out
     

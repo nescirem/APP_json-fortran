@@ -46,15 +46,19 @@
 				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/></Configuration></Configurations>
 	<Files>
 		<Filter Name="src" Filter="f90;for;f;fpp;ftn;def;odl;idl">
+		<Filter Name="functions">
 		<File RelativePath="..\..\src\check_uniqueness.f90"/>
-		<File RelativePath="..\..\src\data_define.f90"/>
-		<File RelativePath="..\..\src\error_out.f90"/>
-		<File RelativePath="..\..\src\functions.f90"/>
+		<File RelativePath="..\..\src\functions.f90"/></Filter>
+		<Filter Name="json_control">
+		<File RelativePath="..\..\src\jc_asi_solver.f90"/>
 		<File RelativePath="..\..\src\jc_example_usage.f90"/>
 		<File RelativePath="..\..\src\jc_grid_additional.f90"/>
-		<File RelativePath="..\..\src\jc_grid_control.f90"/>
-		<File RelativePath="..\..\src\jc_zone.f90"/>
-		<File RelativePath="..\..\src\json_to_map.f90"/>
-		<File RelativePath="..\..\src\mod_cfd_control.f90"/>
-		<File RelativePath="..\..\src\progress_out.f90"/></Filter></Files>
+		<File RelativePath="..\..\src\jc_grid.f90"/>
+		<File RelativePath="..\..\src\jc_solver.f90"/>
+		<File RelativePath="..\..\src\jc_zone.f90"/></Filter>
+		<Filter Name="output">
+		<File RelativePath="..\..\src\error_out.f90"/>
+		<File RelativePath="..\..\src\progress_out.f90"/></Filter>
+		<File RelativePath="..\..\src\data_define.f90"/>
+		<File RelativePath="..\..\src\mod_control.f90"/></Filter></Files>
 	<Globals/></VisualStudioProject>

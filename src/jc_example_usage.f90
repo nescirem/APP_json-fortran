@@ -9,7 +9,7 @@
 program jc_example_usage
     
     use, intrinsic :: iso_fortran_env,  only: output_unit
-    use jc_CAA_mod
+    use jc_ASI_mod
     use common_data,                    only: error_code,dir,filename
     use functions,                      only: clean_str
     
@@ -29,6 +29,13 @@ program jc_example_usage
     
     ! input zone settings
     call jc_zone
+    
+    ! input solver settings
+    call jc_solver
+    !! input asi solver settings
+    call jc_asi_solver
+    
+    
     
     write( output_unit,"(A)" ) 'Done.'
     

@@ -2,41 +2,36 @@
 !> author: nescirem
 !  date: 4/30/2019
 !
-!  Module parse zones information.
+!  Module parse base solver settings.
 
-module jc_zone_mod
+module jc_solver_mod
 
     use json_module, CK => json_CK, IK => json_IK
     use, intrinsic :: iso_fortran_env,  only: error_unit
-    use common_data,                    only: dir,filename,error_code,&
-                                            n_zone,zone_id
+    use common_data,                    only: dir,filename,error_code
     use functions,                      only: clean_str
     
     implicit none
 
     private
-    public :: jc_zone
+    public :: jc_solver
 
 contains
     !====================================================================
     
     !-------------------------------------------------------------------+
-    subroutine jc_zone                                                  !
+    subroutine jc_solver                                                !
     !-------------------------------------------------------------------+
     
-    use common_data,    only: n_phase,zone_material_id,is_homogeneous
+    use common_data,    only: problem_type,zone_type
 
     implicit none
 
     type(json_file)             :: json         !! the JSON structure read from the file
-    type(json_core)             :: core         !! factory for manipulating `json_value` pointers
     type(json_value),pointer    :: p            !! a pointer for low-level manipulations
     
-    integer(IK)                                 :: var_type
     character(kind=CK,len=:),allocatable        :: str_temp
     logical                                     :: found
-    integer                                     :: i
-    character(len=16)                           :: i_str
     
     
     call json%initialize()
@@ -52,27 +47,33 @@ contains
     call progress_out
     
     error_code = error_code+1
-    do i=1,n_zone
-        call json%get( 'zone.'//clean_str(zone_id(i))//'.material', str_temp, found )
-        if ( found ) then
-            write( zone_material_id(i),* ) str_temp
-        else !if ( .not.found ) then
-            call error_out( 'Must specify zone material, please check: zone.'//clean_str(zone_id(i))//'.material' )
-        endif
-        
-        call json%get( 'zone.'//clean_str(zone_id(i))//'.isHomogeneous',is_homogeneous, found )
-        if ( .not.found ) is_homogeneous = .true. ! default homogeneous
-    enddo
+    call json%get( 'solver.problemType', str_temp, found )
+    if ( .not.found ) call error_out( 'Must specify problem solver, please check: solver.problemType' )
+    select case ( str_temp )
+    case ( 'acoustic solid interaction' )
+        problem_type = 1
+    case ( 'ASI' )
+        problem_type = 1
+    case ( 'CAA' )
+        problem_type = 2
+    case ( 'CFD' )
+        problem_type = 3
+    case ( 'chemical kinetics' )
+        problem_type = 4
+    case ( 'structural mechanics' )
+        problem_type = 5
+    case default
+        call error_out( 'Unknown problem solver "'//str_temp//'", please check: solver.problemType' )
+    end select
     call progress_out
-        
     
     ! clean up
     call json%destroy()
     if ( json%failed() ) call json%print_error_message( error_unit )
     
-    end subroutine jc_zone
+    end subroutine jc_solver
     
     !====================================================================
     
     
-end module jc_zone_mod
+end module jc_solver_mod

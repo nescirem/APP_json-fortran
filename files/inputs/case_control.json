@@ -10,9 +10,8 @@
 			"fileName": "case.cgns",
 			"fileType": "cgns",
 			"zone": {
-				! zone Type, one of fluid | solid | acoustic
-				"11":{"name": "air","type": "acoustic"},
-				"12":{"name": "porous", "type": "acoustic","numPhases": 1,"isHomogeneous": true}
+				"11":{"name": "air"},
+				"12":{"name": "porous"}
 			}
 		}
 	],
@@ -30,16 +29,17 @@
 		"312": {
 			"name": "porous","rho": 1.226, "structureConstant": 3.0, 
 			"flowResistance": 2000.0,"porousity": 0.3,"heatCapacityRatio": 1.4,
-			"ambientPressure": 101215
+			"ambientPressure": 101215 !//,"isMultiphase":false
 		}
 	},
 	"solver": {
-		"problemType": "Acoustic Solid Interaction", ! or ASI
+		"problemType": "acoustic solid interaction", ! or ASI
 		! problem type, one of CFD | ASI
 		"asiSetting": {
 			"zone": {
-				"11": { "problem":"WavePropagation in air" },
-				"12": { "problem":"WavePropagation in porous" }
+				! zone problem type, one of fluid | solid | acoustic | vibration
+				"11": { "problem":"acoustic","waveFlag":5,"numWave":4,"haveMeanFlow":false,"isPorous":false },
+				"12": { "problem":"acoustic","waveFlag":5,"numWave":4,"haveMeanFlow":false,"isPorous":true }
 			}
 		}
 	},
@@ -64,13 +64,16 @@
 		"12": {"material":"312","isHomogeneous": true}
 	},
 	"boundary": {
-        "in": 	 {
-			"id": "1011","type": "acousticSource",
-			"acousticSourceSetting": {"type": "gauss pulse", "amplitude": 1, "frequency": 8000}
+        "in": 	 {"id": "1011","type": "acousticSource",
+				"acousticSourceSetting": {"type": "gauss pulse", "amplitude": 1, "frequency": 8000}
 		},
         "wall_a":{"id": "1012","type": "hard wall"},
-		"inf_a": {"id": "1013","type": "interface","correspondingFace":"inf_p","isCorrespondenceNode": true},
-        "inf_p": {"id": "1014","type": "interface","correspondingFace":"inf_a","isCorrespondenceNode": true},
+		"inf_a": {"id": "1013","type": "interface",
+				"correspondingFace":"inf_p",
+				"isCorrespondenceNode": true},
+        "inf_p": {"id": "1014","type": "interface",
+				"correspondingFace":"inf_a",
+				"isCorrespondenceNode": true},
         "wall_p":{"id": "1015","type": "hard wall"},
 		"out":	 {"id": "1016","type": "transmissive"},
     },

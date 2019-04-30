@@ -36,7 +36,6 @@
         integer                                     :: n_zone
         character(len=32),pointer,dimension(:)      :: zone_id      ! max zone id never >= 1x10e33
         character(len=128),pointer,dimension(:)     :: zone_name
-        integer,pointer,dimension(:)                :: zone_type
         
         ! grid infomation
         logical                                     :: threeD=.false.,twoD=.false.,&
@@ -49,6 +48,16 @@
         integer                                     :: n_phase
         character(len=128),pointer,dimension(:)     :: zone_material_id
         logical                                     :: is_homogeneous
+        integer,pointer,dimension(:)                :: zone_type
+        
+        ! solver settings
+        integer                                     :: problem_type
+        !! asi solver
+        logical,pointer,dimension(:)                :: have_mean_flow,is_porous
+        integer,pointer,dimension(:)                :: wave_flag,n_wave
+        !! cfd solver
+        
+        
         
         
         

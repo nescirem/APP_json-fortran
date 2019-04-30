@@ -6,7 +6,7 @@
 
 module jf_to_map_mod
 
-    use json_module, CK => json_CK, IK => json_IK, LK => json_LK
+    use json_module, CK => json_CK, IK => json_IK
     use, intrinsic :: iso_fortran_env,  only: error_unit, output_unit
     use common_data,                    only: error_code,n_zone,zone_name,zone_type,zone_id
     use functions,                      only: clean_str
