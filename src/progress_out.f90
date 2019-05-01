@@ -2,7 +2,7 @@
 !> author: nescirem
 !  date: 04/29/2019
 !
-!  Subroutine for show progressing.
+!  Subroutine showing the progress.
 !
 
 subroutine progress_out
@@ -11,7 +11,18 @@ subroutine progress_out
     
     implicit none
     
-    write( output_unit,"(A)",advance='no' ) '.'
-
+    integer,parameter   :: line_len = 57
+    integer,save        :: output_count = 0
+    
+    
+    output_count = output_count+1
+    
+    if ( output_count==line_len ) then
+        write( output_unit,"(A)" ) '.'
+        output_count = 0
+    else
+        write( output_unit,"(A)",advance='no' ) '.'
+    end if
+    
     
 end subroutine progress_out

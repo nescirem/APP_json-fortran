@@ -3,10 +3,11 @@
 !  date: 4/29/2019
 !
 !  Module parse grid info.
+!
 
-module jc_grid_control_mod
+module jc_grid_mod
 
-    use json_module, CK => json_CK, IK => json_IK, LK => json_LK
+    use json_module, CK => json_CK, IK => json_IK!, LK => json_LK, RK => json_RK
     use, intrinsic :: iso_fortran_env,  only: error_unit
     use common_data,                    only: dir,filename,error_code,&
                                             grid_file,grid_type
@@ -16,16 +17,16 @@ module jc_grid_control_mod
     implicit none
 
     private
-    public :: jc_grid_control
+    public :: jc_grid
 
 contains
     !====================================================================
     
     !-------------------------------------------------------------------+
-    subroutine jc_grid_control                                          !
+    subroutine jc_grid                                                  !
     !-------------------------------------------------------------------+
     
-    use common_data,    only: n_grid
+    use common_data,            only: n_grid
 
     implicit none
 
@@ -59,7 +60,11 @@ contains
     call json%get( 'grid', p )
     if ( json%failed() ) call json%print_error_message( error_unit )
     
+    error_code = error_code+1
     call core%info( p, var_type=var_type, n_children=n_grid )
+    if ( n_grid==0 ) call error_out( 'grid information is required, please check: grid' )
+    call progress_out
+    
     error_code = error_code+1
     select case ( var_type )
     case ( json_object )
@@ -80,7 +85,7 @@ contains
     call json%destroy()
     if ( json%failed() ) call json%print_error_message( error_unit )
     
-    end subroutine jc_grid_control
+    end subroutine jc_grid
     
     !====================================================================
     
@@ -134,10 +139,14 @@ contains
     endif
     call progress_out
     
-    ! get num of the elements
+    ! get number of the zone
+    error_code = error_code+1
     call core%get( p_local,'zone', p_lower_1 )
     if ( core%failed() ) call core%print_error_message( error_unit )
     call core%info( p_lower_1, var_type=var_type, n_children=n_zone )
+    if ( n_zone==0 ) call error_out( 'At least one zone in the grid file' )
+    call progress_out
+    
     ! allocate zone data
     allocate( zone_id(n_zone), zone_name(n_zone),zone_type(n_zone) )
     call progress_out
@@ -227,11 +236,16 @@ contains
         end if
         call progress_out
     
-        ! get num of the elements
+        ! get num of the zone
+        error_code = error_code+1
         call core%get( p_local,'@['//clean_str(i_str)//'].zone', p_lower_1 )
         if ( core%failed() ) call core%print_error_message( error_unit )
         call core%info( p_lower_1, var_type=var_type, n_children=n_zone )
+        if ( n_zone==0 ) call error_out( 'At least one zone in each grid file' )
+        call progress_out
+        
         np_zone = np_zone+n_zone
+        
     enddo
     ! allocate zone data
     allocate( zone_id(np_zone),zone_name(np_zone),zone_type(np_zone),zone_material_id(np_zone) )
@@ -288,4 +302,4 @@ contains
     !====================================================================
     
 
-end module jc_grid_control_mod
+end module jc_grid_mod

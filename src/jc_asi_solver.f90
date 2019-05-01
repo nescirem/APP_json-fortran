@@ -3,6 +3,7 @@
 !  date: 4/30/2019
 !
 !  Module parse base solver settings.
+!
 
 module jc_asi_solver_mod
 
@@ -24,8 +25,8 @@ contains
     subroutine jc_asi_solver                                            !
     !-------------------------------------------------------------------+
     
-    use common_data,                    only: zone_type,have_mean_flow,is_porous,&
-                                            wave_flag,n_wave
+    use common_data,            only: zone_type,have_mean_flow,is_porous,&
+                                    wave_flag,n_wave
     
     implicit none
     

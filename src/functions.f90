@@ -26,5 +26,21 @@ contains
     
     !====================================================================
     
+    !-------------------------------------------------------------------+
+    function quote_str(string)                                          !
+    ! add double quotes at the beginning and end of a string            !
+    !-------------------------------------------------------------------+
+        
+        implicit none
+    
+        character(:), allocatable   :: quote_str
+        character(len=*)            :: string
+        
+        quote_str = '"'//string//'"'
+    
+    end function quote_str
+    
+    !====================================================================
+    
     
 end module functions

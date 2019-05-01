@@ -5,12 +5,13 @@
 !  Module of parameters
 !  Module of shared common data.
 !
+    
     module parameters
     
-    implicit none
+        implicit none
     
-    integer,parameter       :: dp = kind(1.0d0)
-    integer,parameter       :: sp = kind(1.0e0)
+        integer,parameter       :: dp = kind(1.0d0)
+        integer,parameter       :: sp = kind(1.0e0)
     
     end module parameters
     
@@ -56,6 +57,27 @@
         logical,pointer,dimension(:)                :: have_mean_flow,is_porous
         integer,pointer,dimension(:)                :: wave_flag,n_wave
         !! cfd solver
+        
+        
+        ! material information
+        integer                                     :: n_material
+        type material
+            character(len=:),allocatable            :: material_id, material_name
+            real(dp)                                :: rho, heat_capacity_ratio
+            !! asi material
+            real(dp)                                :: acoustic_velocity, flow_resistance
+            real(dp)                                :: structure_constant, porousity, ambient_pressure
+            !! cfd material
+            logical                                 :: is_multiphase
+            integer                                 :: ratio_flag  ! 1=volume persentage, 2=mass persentage 
+            real(dp)                                :: ratio
+        end type material
+        
+        type(material),pointer,dimension(:)         :: MTR
+            
+        
+        
+        
         
         
         

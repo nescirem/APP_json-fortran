@@ -4,6 +4,7 @@
 !
 !  Module for check the uniqueness between array elements,
 !  integer or character arrays are supported
+!
     
 module check_uniqueness_mod
 
@@ -51,6 +52,7 @@ contains
     !-------------------------------------------------------------------+
     subroutine check_uniqueness_cvec( cvec,size_vec,is_unique )         !
     ! check the uniqueness between character array elements             !
+    ! " str  " = "str"   ->  .true.                                     !
     !-------------------------------------------------------------------+
     
     use functions,                  only: clean_str
@@ -81,5 +83,5 @@ contains
     
     !====================================================================
     
-  
+
 end module check_uniqueness_mod

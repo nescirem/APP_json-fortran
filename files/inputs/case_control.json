@@ -1,5 +1,5 @@
 ! createdDate:  2018-12-24T03:24:00
-! modifiedDate: 2019-04-28T20:29:00
+! modifiedDate: 2019-05-01T00:29:00
 {
 	"log": {
         "logPath": "./",
@@ -15,7 +15,7 @@
 			}
 		}
 	],
-	"additionalGridInfo": {
+	"gridControl": {
 		"space": "3D",
 		! space type, one of AXI2D | 3D | 2D | REVOLVE
 		"scale": 1.0e0,
@@ -25,11 +25,11 @@
 	},
 	"parallel": {},
 	"material": {
-		"311": {"name": "air","rho": 1.226, "acousticVelocity": 340},
+		"311": {"rho": 1.226, "acousticVelocity": 340},
 		"312": {
-			"name": "porous","rho": 1.226, "structureConstant": 3.0, 
+			"name": "porous","rho": 1.226, "acousticVelocity": 340,"structureConstant": 3.0, 
 			"flowResistance": 2000.0,"porousity": 0.3,"heatCapacityRatio": 1.4,
-			"ambientPressure": 101215 !//,"isMultiphase":false
+			"ambientPressure": 101215.0 !//,"isMultiphase":false
 		}
 	},
 	"solver": {
