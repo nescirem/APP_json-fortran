@@ -188,7 +188,7 @@ contains
     !-------------------------------------------------------------------+
     
     use common_data,    only: n_grid,grid_file,grid_type,&
-                            n_zone,zone_name,zone_type,zone_id,zone_material_id
+                            n_zone,zone_name,zone_type,zone_id
     
     implicit none
     
@@ -248,7 +248,7 @@ contains
         
     enddo
     ! allocate zone data
-    allocate( zone_id(np_zone),zone_name(np_zone),zone_type(np_zone),zone_material_id(np_zone) )
+    allocate( zone_id(np_zone),zone_name(np_zone),zone_type(np_zone) )
     call progress_out
     
     ! parase the name/id of each elements

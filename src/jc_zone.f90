@@ -42,6 +42,8 @@ contains
     
     call json%initialize()
     
+    allocate ( zone_material_id(n_zone),is_homogeneous(n_zone) )
+    
     ! parse the json file
     error_code = error_code+1
     call json%load_file( filename = dir//filename )
@@ -61,8 +63,8 @@ contains
             call error_out( 'Must specify zone material, please check: zone.'//clean_str(zone_id(i))//'.material' )
         endif
         
-        call json%get( 'zone.'//clean_str(zone_id(i))//'.isHomogeneous',is_homogeneous, found )
-        if ( .not.found ) is_homogeneous = .true. ! default homogeneous
+        call json%get( 'zone.'//clean_str(zone_id(i))//'.isHomogeneous',is_homogeneous(i), found )
+        if ( .not.found ) is_homogeneous(i) = .true. ! default homogeneous
     enddo
     call progress_out
         

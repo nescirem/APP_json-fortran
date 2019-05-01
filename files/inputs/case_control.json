@@ -74,7 +74,7 @@
 				"correspondingFace":"inf_a",
 				"isCorrespondenceNode": true},
         "wall_p":{"id": "1015","type": "hard wall"},
-		"out":	 {"id": "1016","type": "transmissive"},
+		"out":	 {"id": "1016","type": "transmissive"}
     },
 	"initialize": {"haveFiledSource":true},
 	"output": {}

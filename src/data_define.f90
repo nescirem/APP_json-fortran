@@ -48,7 +48,7 @@ module common_data
     ! zone information
     integer                                     :: n_phase
     character(len=128),pointer,dimension(:)     :: zone_material_id
-    logical                                     :: is_homogeneous
+    logical,pointer,dimension(:)                :: is_homogeneous
     integer,pointer,dimension(:)                :: zone_type
         
     ! solver settings
