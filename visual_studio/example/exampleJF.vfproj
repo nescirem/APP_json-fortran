@@ -57,6 +57,7 @@
 		<File RelativePath="..\..\src\jc_grid_control.f90"/>
 		<File RelativePath="..\..\src\jc_material.f90"/>
 		<File RelativePath="..\..\src\jc_solver.f90"/>
+		<File RelativePath="..\..\src\jc_strategy.f90"/>
 		<File RelativePath="..\..\src\jc_zone.f90"/></Filter>
 		<Filter Name="output">
 		<File RelativePath="..\..\src\error_out.f90"/>

@@ -41,6 +41,9 @@ program jc_example_usage
     !! input asi material info
     call jc_asi_material
     
+    ! input discrete strategy settings
+    call jc_strategy
+    
     write( output_unit,"(/,A)" ) 'Done.'
     
 end program jc_example_usage

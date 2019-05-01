@@ -18,6 +18,7 @@ module jc_base_mod                                                  !
     !use jc_parallel_mod,                only: jc_parallel
     use jc_solver_mod,                  only: jc_solver
     use jc_material_mod,                only: jc_material
+    use jc_strategy_mod,                only: jc_strategy
     
     implicit none
     

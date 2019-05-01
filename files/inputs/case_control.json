@@ -1,5 +1,5 @@
 ! createdDate:  2018-12-24T03:24:00
-! modifiedDate: 2019-05-01T00:29:00
+! modifiedDate: 2019-05-01T21:29:00
 {
 	"log": {
         "logPath": "./",
@@ -44,19 +44,18 @@
 		}
 	},
 	"strategy": {
-        "time": {
+        "time": "transient",
+		"timeSetting": {
             "formulation": "explicit",
-            "settings": {
-                "timeStart": 0.0,
-                "timeEnd": 1.0
-            }
+            "timeStart": 0.0,
+            "timeEnd": 1.0,
+			"deltaT": 1e-6
         },
-		"deltaT": 1e-6,
-        "gradient": "linear",
+		"gradient": "linear",
         ! OR set each zone separately, which will replace the overall settings
-		"zones": {
-            "11": {"gradient": "linear", "deltaT": 1e-6},
-			"12": {"gradient": "linear", "deltaT": 1e-6}
+		"zone": {
+            "11": {"gradient": "linear","timeFormulation": "explicit", "deltaT": 1e-6},
+			"12": {"gradient": "least squares","timeFormulation": "implicit", "deltaT": 1e-6}
         }
     },
 	"zone": {

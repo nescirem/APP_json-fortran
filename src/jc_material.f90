@@ -37,6 +37,7 @@ contains
     character(len=16)           :: i_str        !! counter in string
     integer(IK)                 :: var_type
     character(kind=CK,len=:),allocatable        :: str_temp
+    character(len=64),pointer,dimension(:)      :: vec_material_id
     logical                                     :: found,is_unique
     
     call json%initialize()
@@ -70,6 +71,16 @@ contains
         if ( core%failed() ) call core%print_error_message( error_unit )
         call core%info( p_temp, name=MTR(i)%material_id )
     end do
+    call progress_out
+    
+    ! check the uniqueness of material id 
+    allocate ( vec_material_id(n_material) )
+    do i=1,n_material
+        vec_material_id(i) = MTR(i)%material_id
+    enddo
+    error_code = error_code+1
+    call check_uniqueness( vec_material_id,size(vec_material_id),is_unique )
+    if ( .not.is_unique ) call error_out( 'Material ID must be unique.' )
     call progress_out
     
     ! get the material base information
