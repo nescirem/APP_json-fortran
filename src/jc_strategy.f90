@@ -9,7 +9,9 @@ module jc_strategy_mod
 
     use json_module, CK => json_CK, RK => json_RK
     use, intrinsic :: iso_fortran_env,  only: error_unit
-    use common_data,                    only: dir,filename,error_code,&
+    use jc_error_out_mod
+    use jc_progress_out_mod
+    use common_data,                    only: exit_if_error,dir,filename,error_code,&
                                             n_zone,zone_id
     use functions,                      only: clean_str
     use check_uniqueness_mod
@@ -50,7 +52,7 @@ contains
     error_code = error_code+1
     if ( json%failed() ) then
         call json%print_error_message( error_unit )
-        call error_out( 'An error occurred during parse JSON file' )
+        call error_out( 'An error occurred during parse JSON file',terminate=.true. )
     end if
     call progress_out
     
@@ -61,14 +63,14 @@ contains
     ! get the time discrete strategy
     error_code = error_code+1
     call json%get( 'strategy.time', str_temp, found )
-    if ( .not.found ) call error_out( 'Must specify the time stategy, please check: strategy.time' )
+    if ( .not.found ) call error_out( 'Must specify the time stategy, please check: strategy.time',exit_if_error )
     select case ( str_temp )
     case ( 'transient' )
         time_stategy = 1
     case ( 'steady' )
         time_stategy = 2
     case default
-        call error_out( 'Unknown time discrete stategy "'//str_temp//'", please check: strategy.time' )
+        call error_out( 'Unknown time discrete stategy "'//str_temp//'", please check: strategy.time',exit_if_error )
     end select
     call progress_out
     
@@ -87,7 +89,7 @@ contains
                 transient_formulation(:) = 2
             case default
                 call error_out( 'Unknown time discrete stategy "'//str_temp//'", '&
-                        //'please check: strategy.timeSetting.formulation' )
+                        //'please check: strategy.timeSetting.formulation',exit_if_error )
             end select
             is_tf_setted(:) = .true.
         end if
@@ -96,14 +98,14 @@ contains
         error_code = error_code+1
         call json%get( 'strategy.timeSetting.timeStart', real_temp, found )
         if ( .not.found ) call error_out( 'Must specify the start time, '&
-                                //'please check: strategy.timeSetting.timeStart' )
+                                //'please check: strategy.timeSetting.timeStart',exit_if_error )
         time_start = real_temp
         call progress_out
         
         error_code = error_code+1
         call json%get( 'strategy.timeSetting.timeEnd', real_temp, found )
         if ( .not.found ) call error_out( 'Must specify the start time, '&
-                                //'please check: strategy.timeSetting.timeEnd' )
+                                //'please check: strategy.timeSetting.timeEnd',exit_if_error )
         time_end = real_temp
         call progress_out
         
@@ -127,7 +129,8 @@ contains
         case ( 'least squares' )
             gradient(:) = 2
         case default
-            call error_out( 'Unknown gradient solution strategy "'//str_temp//'", please check: strategy.gradient' )
+            call error_out( 'Unknown gradient solution strategy "'//str_temp &
+                    //'", please check: strategy.gradient',exit_if_error )
         end select
         is_gs_setted(:) = .true.
     end if
@@ -146,7 +149,7 @@ contains
                 transient_formulation(i) = 2
             case default
                 call error_out( 'Unknown time discrete stategy "'//str_temp//'", '&
-                    //'please check: strategy.zone.'//clean_str(zone_id(i))//'.timeFormulation' )
+                    //'please check: strategy.zone.'//clean_str(zone_id(i))//'.timeFormulation',exit_if_error )
             end select
             is_tf_setted(i) = .true.
         end if
@@ -160,7 +163,7 @@ contains
                 gradient(i) = 2
             case default
                 call error_out( 'Unknown gradient solution strategy "'//str_temp//'", '&
-                        //'please check: strategy.zone.'//clean_str(zone_id(i))//'.gradient' )
+                        //'please check: strategy.zone.'//clean_str(zone_id(i))//'.gradient',exit_if_error )
             end select
             is_gs_setted(i) = .true.
         end if
@@ -176,9 +179,9 @@ contains
     
     ! check if there missing settings in some zone 
     error_code = error_code+1
-    if ( any( is_dt_setted==.false. ) ) call error_out( 'Must set deltaT for each zone' )
-    if ( any( is_gs_setted==.false. ) ) call error_out( 'Must set gardient strategy for each zone' )
-    if ( any( is_tf_setted==.false. ) ) call error_out( 'Must set time formulation strategy for each zone' )
+    if ( any( is_dt_setted==.false. ) ) call error_out( 'Must set deltaT for each zone',exit_if_error )
+    if ( any( is_gs_setted==.false. ) ) call error_out( 'Must set gardient strategy for each zone',exit_if_error )
+    if ( any( is_tf_setted==.false. ) ) call error_out( 'Must set time formulation strategy for each zone',exit_if_error )
     call progress_out
     
     ! clean up

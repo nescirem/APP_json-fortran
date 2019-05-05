@@ -45,17 +45,32 @@
 				<Tool Name="VFPostBuildEventTool"/>
 				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/></Configuration></Configurations>
 	<Files>
+		<Filter Name="file" SourceControlFiles="false">
+		<File RelativePath="..\..\files\inputs\case_control.json"/>
+		<File RelativePath="..\..\files\inputs\json_to_map.json"/></Filter>
 		<Filter Name="src" Filter="f90;for;f;fpp;ftn;def;odl;idl">
 		<Filter Name="functions">
 		<File RelativePath="..\..\src\check_uniqueness.f90"/>
 		<File RelativePath="..\..\src\functions.f90"/></Filter>
 		<Filter Name="json_control">
+		<File RelativePath="..\..\src\jc_asi_boundary.f90"/>
+		<File RelativePath="..\..\src\jc_asi_initial.f90"/>
 		<File RelativePath="..\..\src\jc_asi_material.f90"/>
+		<File RelativePath="..\..\src\jc_asi_output.f90"/>
 		<File RelativePath="..\..\src\jc_asi_solver.f90"/>
+		<File RelativePath="..\..\src\jc_boundary.f90"/>
+		<File RelativePath="..\..\src\jc_nht_boundary.f90"/>
+		<File RelativePath="..\..\src\jc_nht_initial.f90"/>
+		<File RelativePath="..\..\src\jc_nht_material.f90"/>
+		<File RelativePath="..\..\src\jc_nht_output.f90"/>
+		<File RelativePath="..\..\src\jc_nht_parallel.f90"/>
+		<File RelativePath="..\..\src\jc_nht_solver.f90"/>
 		<File RelativePath="..\..\src\jc_example_usage.f90"/>
 		<File RelativePath="..\..\src\jc_grid.f90"/>
 		<File RelativePath="..\..\src\jc_grid_control.f90"/>
+		<File RelativePath="..\..\src\jc_initial.f90"/>
 		<File RelativePath="..\..\src\jc_material.f90"/>
+		<File RelativePath="..\..\src\jc_output.f90"/>
 		<File RelativePath="..\..\src\jc_solver.f90"/>
 		<File RelativePath="..\..\src\jc_strategy.f90"/>
 		<File RelativePath="..\..\src\jc_zone.f90"/></Filter>

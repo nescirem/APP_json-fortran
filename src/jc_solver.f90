@@ -9,7 +9,9 @@ module jc_solver_mod
 
     use json_module, CK => json_CK, IK => json_IK
     use, intrinsic :: iso_fortran_env,  only: error_unit
-    use common_data,                    only: dir,filename,error_code
+    use jc_error_out_mod
+    use jc_progress_out_mod
+    use common_data,                    only: exit_if_error,dir,filename,error_code
     use functions,                      only: clean_str
     
     implicit none
@@ -43,13 +45,13 @@ contains
     error_code = error_code+1
     if ( json%failed() ) then
         call json%print_error_message( error_unit )
-        call error_out( 'An error occurred during parse JSON file' )
+        call error_out( 'An error occurred during parse JSON file',terminate=.true. )
     end if
     call progress_out
     
     error_code = error_code+1
     call json%get( 'solver.problemType', str_temp, found )
-    if ( .not.found ) call error_out( 'Must specify problem solver, please check: solver.problemType' )
+    if ( .not.found ) call error_out( 'Must specify problem solver, please check: solver.problemType',exit_if_error )
     select case ( str_temp )
     case ( 'acoustic solid interaction' )
         problem_type = 1
@@ -64,7 +66,7 @@ contains
     case ( 'structural mechanics' )
         problem_type = 5
     case default
-        call error_out( 'Unknown problem solver "'//str_temp//'", please check: solver.problemType' )
+        call error_out( 'Unknown problem solver "'//str_temp//'", please check: solver.problemType',exit_if_error )
     end select
     call progress_out
     

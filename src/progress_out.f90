@@ -2,12 +2,21 @@
 !> author: nescirem
 !  date: 04/29/2019
 !
-!  Subroutine showing the progress.
+!  Module showing the progress.
 !
+module jc_progress_out_mod
 
-subroutine progress_out
-    
     use, intrinsic :: iso_fortran_env,  only: output_unit
+
+    implicit none
+
+    private
+
+    public :: progress_out
+
+contains
+    
+    subroutine progress_out
     
     implicit none
     
@@ -24,5 +33,7 @@ subroutine progress_out
         write( output_unit,"(A)",advance='no' ) '.'
     end if
     
+    end subroutine progress_out
     
-end subroutine progress_out
+    
+end module jc_progress_out_mod

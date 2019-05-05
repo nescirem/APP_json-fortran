@@ -9,7 +9,9 @@ module jc_grid_control_mod
 
     use json_module, CK => json_CK, IK => json_IK, LK => json_LK
     use, intrinsic :: iso_fortran_env,  only: error_unit
-    use common_data,                    only: dir,filename,error_code,&
+    use jc_error_out_mod
+    use jc_progress_out_mod
+    use common_data,                    only: exit_if_error,dir,filename,error_code,&
                                             grid_file,grid_type
                                         
     implicit none
@@ -43,13 +45,13 @@ contains
     error_code = error_code+1
     if ( json%failed() ) then
         call json%print_error_message( error_unit )
-        call error_out( 'An error occurred during parse JSON file' )
+        call error_out( 'An error occurred during parse JSON file',terminate=.true. )
     end if
     call progress_out
     
     call json%get( 'gridControl.space', str_temp, found )
     error_code = error_code+1
-    if ( .not.found ) call error_out( 'Must specify space type, please check: gridControl.space' )
+    if ( .not.found ) call error_out( 'Must specify space type, please check: gridControl.space',exit_if_error )
     select case ( str_temp )
     case ( 'AXI2D' )
         AXI2D = .true.
@@ -60,7 +62,7 @@ contains
     case ( 'REVOLVE' )
         REVOLVE = .true.
     case default
-        call error_out( 'Unknown space type "'//str_temp//'", please check: gridControl.space' )
+        call error_out( 'Unknown space type "'//str_temp//'", please check: gridControl.space',exit_if_error )
     end select
     call progress_out
     
@@ -68,7 +70,7 @@ contains
     error_code = error_code+1
     if ( json%failed() ) then
         call json%print_error_message( error_unit )
-        call error_out( 'An error occurred during parse: gridControl.scale' )
+        call error_out( 'An error occurred during parse: gridControl.scale',exit_if_error )
     end if
     if ( .not.found ) scale = 1.0d0 !default scale is 1.0
     call progress_out
@@ -77,7 +79,7 @@ contains
     error_code = error_code+1
     if ( json%failed() ) then
         call json%print_error_message( error_unit )
-        call error_out( 'An error occurred during parse: gridControl.haveInteriorFace' )
+        call error_out( 'An error occurred during parse: gridControl.haveInteriorFace',exit_if_error )
     end if
     if ( .not.found ) have_interior_face = .false. !default have no interior faces
     call progress_out
@@ -86,7 +88,7 @@ contains
     error_code = error_code+1
     if ( json%failed() ) then
         call json%print_error_message( error_unit )
-        call error_out( 'An error occurred during parse: gridControl.numPairInterface' )
+        call error_out( 'An error occurred during parse: gridControl.numPairInterface',exit_if_error )
     end if
     if ( .not.found ) n_interface_pair = 0 !default no interfaces
     call progress_out
@@ -95,7 +97,7 @@ contains
     error_code = error_code+1
     if ( json%failed() ) then
         call json%print_error_message( error_unit )
-        call error_out( 'An error occurred during parse: gridControl.numPairCyclePair' )
+        call error_out( 'An error occurred during parse: gridControl.numPairCyclePair',exit_if_error )
     end if
     if ( .not.found ) n_cycle_face_pair = 0 ! default no cycle face pair
     call progress_out

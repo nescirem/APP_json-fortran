@@ -137,6 +137,8 @@ DocProject/Help/html
 
 # Click-Once directory
 publish/
+doc/
+media/
 
 # Publish Web Output
 *.[Pp]ublish.xml

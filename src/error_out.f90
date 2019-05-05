@@ -2,30 +2,54 @@
 !> author: nescirem
 !  date: 04/28/2019
 !
-!  Subroutine error message output for debug.
+!  Module print error message for debug.
 !
+module jc_error_out_mod
 
-subroutine error_out ( err_message )
+    use, intrinsic :: iso_fortran_env,  only: error_unit
+
+    implicit none
+
+    private
+    
+    interface error_out
+        module procedure jc_error_out
+    end interface
+
+    public :: error_out
+
+contains
+    
+    subroutine jc_error_out ( err_message,terminate )
     
     use common_data,                    only: error_code
-    use, intrinsic :: iso_fortran_env,  only: error_unit
     use functions,                      only: clean_str
     
     implicit none
 
     character(len=*),intent(in)         :: err_message
+    logical,optional,intent(in)         :: terminate
     character(len=32)                   :: error_code_str
     
     integer,parameter                   :: set_len = 45
+    logical,parameter                   :: default_terminate = .false.
+    
     integer                             :: err_message_len
     real                                :: nr_parts
     integer                             :: n_parts,i
-    logical                             :: separate = .true.
+    logical                             :: separate,l_terminate
+    
+    if (  present(terminate) ) then
+        l_terminate = terminate
+    else
+        l_terminate = default_terminate
+    end if
     
     err_message_len = len( clean_str(err_message) )
     nr_parts = real(err_message_len)/real(set_len)
     n_parts = ceiling( nr_parts )
     
+    separate = .true.
     if ( n_parts == 1 ) separate = .false.
 
     write( error_code_str,* ) error_code
@@ -46,6 +70,9 @@ subroutine error_out ( err_message )
         write( error_unit,"(A,/)" )           ' |-message: '//clean_str(err_message)
     end if
     
-    stop 'Program terminated.'
+    if ( l_terminate ) stop 'Program terminated.'
     
-end subroutine error_out
+    end subroutine jc_error_out
+    
+    
+end module jc_error_out_mod

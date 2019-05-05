@@ -52,6 +52,7 @@
 			"deltaT": 1e-6
         },
 		"gradient": "linear",
+		"CFL": null,
         ! OR set each zone separately, which will replace the overall settings
 		"zone": {
             "11": {"gradient": "linear","timeFormulation": "explicit", "deltaT": 1e-6},
@@ -63,19 +64,22 @@
 		"12": {"material":"312","isHomogeneous": true}
 	},
 	"boundary": {
-        "in": 	 {"id": "1011","type": "acousticSource",
+        "5011": {"name": "in","type": "acousticSource",
 				"acousticSourceSetting": {"type": "gauss pulse", "amplitude": 1, "frequency": 8000}
 		},
-        "wall_a":{"id": "1012","type": "hard wall"},
-		"inf_a": {"id": "1013","type": "interface",
+        "5012": {"name": "wall_a","type": "hard wall"},
+		"5013": {"name": "inf_a","type": "interface",
 				"correspondingFace":"inf_p",
 				"isCorrespondenceNode": true},
-        "inf_p": {"id": "1014","type": "interface",
+        "5014": {"name": "inf_p","type": "interface",
 				"correspondingFace":"inf_a",
 				"isCorrespondenceNode": true},
-        "wall_p":{"id": "1015","type": "hard wall"},
-		"out":	 {"id": "1016","type": "transmissive"}
+        "5015": {"name": "wall_p","type": "hard wall"},
+		"5016":	{"name": "out","type": "transmissive"}
     },
-	"initialize": {"haveFiledSource":true},
+	"initialize": {
+		"haveFiledSource":true,
+		"isRestart": false
+	},
 	"output": {}
 }

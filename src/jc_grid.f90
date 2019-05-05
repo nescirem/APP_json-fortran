@@ -9,7 +9,9 @@ module jc_grid_mod
 
     use json_module, CK => json_CK, IK => json_IK!, LK => json_LK, RK => json_RK
     use, intrinsic :: iso_fortran_env,  only: error_unit
-    use common_data,                    only: dir,filename,error_code,&
+    use jc_error_out_mod
+    use jc_progress_out_mod
+    use common_data,                    only: exit_if_error,dir,filename,error_code,&
                                             grid_file,grid_type
     use functions,                      only: clean_str
     use check_uniqueness_mod
@@ -43,7 +45,7 @@ contains
     error_code = error_code+1
     if ( json%failed() ) then
         call json%print_error_message( error_unit )
-        call error_out( 'An error occurred during parse JSON file' )
+        call error_out( 'An error occurred during parse JSON file',terminate=.true. )
     else ! print the parsed data to the console
         !write( error_unit,'(A)' ) ''
         !write( error_unit,'(A)') 'printing the file...'
@@ -62,7 +64,7 @@ contains
     
     error_code = error_code+1
     call core%info( p, var_type=var_type, n_children=n_grid )
-    if ( n_grid==0 ) call error_out( 'grid information is required, please check: grid' )
+    if ( n_grid==0 ) call error_out( 'grid information is required, please check: grid',exit_if_error )
     call progress_out
     
     error_code = error_code+1
@@ -75,7 +77,7 @@ contains
         allocate ( grid_file(n_grid),grid_type(n_grid) )
         call parse_grids( p )
     case default
-        call error_out( 'Unknown structure, please check: grid' )
+        call error_out( 'Unknown structure, please check: grid',exit_if_error )
     end select
     call progress_out
     
@@ -117,7 +119,7 @@ contains
     if ( found ) then
         write( grid_file(1),* ) str_temp
     else
-        call error_out( 'Must specify grid file name, please check: grid.fileName' )
+        call error_out( 'Must specify grid file name, please check: grid.fileName',exit_if_error )
     end if
     call progress_out
     
@@ -132,7 +134,7 @@ contains
         case ( 'cgns' )
             grid_type(1) = 2
         case default
-            call error_out( 'Unknown grid file type "'//str_temp//'", please check: grid.fileType' )
+            call error_out( 'Unknown grid file type "'//str_temp//'", please check: grid.fileType',exit_if_error )
         end select
     else
         grid_type(1) = 2 ! default cgns
@@ -144,7 +146,7 @@ contains
     call core%get( p_local,'zone', p_lower_1 )
     if ( core%failed() ) call core%print_error_message( error_unit )
     call core%info( p_lower_1, var_type=var_type, n_children=n_zone )
-    if ( n_zone==0 ) call error_out( 'At least one zone in the grid file' )
+    if ( n_zone==0 ) call error_out( 'At least one zone in the grid file',exit_if_error )
     call progress_out
     
     ! allocate zone data
@@ -164,7 +166,7 @@ contains
     ! check the uniqueness of zones id 
     error_code = error_code+1
     call check_uniqueness( zone_id,size(zone_id),is_unique )
-    if ( .not.is_unique ) call error_out( 'Zone ID must be unique.' )
+    if ( .not.is_unique ) call error_out( 'Zone ID must be unique.',exit_if_error )
     call progress_out
     
     ! parase zone settings
@@ -215,7 +217,7 @@ contains
         if ( found ) then
             write( grid_file(i_grid),* ) str_temp
         else
-            call error_out( 'Must specify grid file name, please check: grid.fileName' )
+            call error_out( 'Must specify grid file name, please check: grid.fileName',exit_if_error )
         end if
         call progress_out
         
@@ -229,7 +231,7 @@ contains
             case ( 'cgns' )
                 grid_type(i_grid) = 2
             case default
-                call error_out( 'Unknown grid file type "'//str_temp//'", please check: grid.fileType' )
+                call error_out( 'Unknown grid file type "'//str_temp//'", please check: grid.fileType',exit_if_error )
             end select
         else
             grid_type(i_grid) = 2 ! default cgns
@@ -241,7 +243,7 @@ contains
         call core%get( p_local,'@['//clean_str(i_str)//'].zone', p_lower_1 )
         if ( core%failed() ) call core%print_error_message( error_unit )
         call core%info( p_lower_1, var_type=var_type, n_children=n_zone )
-        if ( n_zone==0 ) call error_out( 'At least one zone in each grid file' )
+        if ( n_zone==0 ) call error_out( 'At least one zone in each grid file',exit_if_error )
         call progress_out
         
         np_zone = np_zone+n_zone
@@ -271,7 +273,7 @@ contains
     ! check the uniqueness of zones id 
     error_code = error_code+1
     call check_uniqueness( zone_id,size(zone_id),is_unique )
-    if ( .not.is_unique ) call error_out( 'Zone ID must be unique.' )
+    if ( .not.is_unique ) call error_out( 'Zone ID must be unique.',exit_if_error )
     call progress_out
     
     ! parase zone name

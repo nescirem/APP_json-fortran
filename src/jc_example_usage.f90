@@ -4,20 +4,25 @@
 !
 !  Entry point for the assemblaged example of json control file.
 !
+!### See also
+!  * [APP_json-fortran development site](https://github.com/nescirem/APP_json-fortran)
+!  * [json-fortran development site](http://github.com/jacobwilliams/json-fortran)
+!  * [json-fortran online documentation](http://jacobwilliams.github.io/json-fortran)
+!  * [JSON website](http://www.json.org/)
+!  * [JSON validator](http://jsonlint.com/)
+!
+!@note Originally JSON-Fortran was entirely contained within this module.
     
 program jc_example_usage
     
-    use, intrinsic :: iso_fortran_env,  only: output_unit
     use jc_ASI_mod
-    use common_data,                    only: error_code,dir,filename
-    use functions,                      only: clean_str
+    use common_data,                    only: exit_if_error,dir,filename
     
     implicit none
     
-    integer :: i
-    
-    dir = clean_str( '  ../files/inputs/' )
-    filename = clean_str(  ' case_control.json ' )
+    exit_if_error = .false.
+    dir = ' ../files/inputs/'
+    filename = 'case_control.json'
     
     ! input grid information
     call jc_grid
@@ -44,6 +49,5 @@ program jc_example_usage
     ! input discrete strategy settings
     call jc_strategy
     
-    write( output_unit,"(/,A)" ) 'Done.'
     
 end program jc_example_usage

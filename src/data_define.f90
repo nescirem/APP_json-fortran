@@ -2,8 +2,10 @@
 !> author: nescirem
 !  date: 04/28/2019
 !
-!  Module of parameters
-!  Module of shared common data.
+!  Parameters and common data.
+!
+!  * Module of parameters
+!  * Module of shared common data.
 !
     
 module parameters
@@ -23,6 +25,9 @@ module common_data
     implicit none
         
     integer                                     :: error_code = 0
+    
+    ! debug
+    logical                                     :: exit_if_error
         
     ! working directory and control file name
     character(:),allocatable                    :: dir          ! working directory
@@ -63,10 +68,10 @@ module common_data
     type material
         character(len=:),allocatable            :: material_id, material_name
         real(dp)                                :: rho, heat_capacity_ratio
-        !! asi material
+        !! ASI material
         real(dp)                                :: acoustic_velocity, flow_resistance
         real(dp)                                :: structure_constant, porousity, ambient_pressure
-        !! cfd material
+        !! NHT material
         logical                                 :: is_multiphase
         integer                                 :: ratio_flag  ! 1=volume persentage, 2=mass persentage 
         real(dp)                                :: ratio
