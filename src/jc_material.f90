@@ -9,11 +9,10 @@ module jc_material_mod
 
     use json_module, CK => json_CK, IK => json_IK
     use, intrinsic :: iso_fortran_env,  only: error_unit
-    use jc_error_out_mod
-    use jc_progress_out_mod
     use common_data,                    only: exit_if_error,dir,filename,error_code
     use functions,                      only: clean_str
     use check_uniqueness_mod
+    use output_mod
     
     implicit none
 
@@ -46,15 +45,7 @@ contains
     
     ! parse the json file
     call json%load_file( filename = dir//filename )
-    error_code = error_code+1
-    if ( json%failed() ) then
-        call json%print_error_message( error_unit )
-        call error_out( 'An error occurred during parse JSON file',terminate=.true. )
-    else
-        call core%initialize()
-        if ( core%failed() ) call core%print_error_message( error_unit )
-    end if
-    call progress_out
+    call core%initialize()
     
     ! get num of the material
     error_code = error_code+1
@@ -101,9 +92,7 @@ contains
     
     ! clean up
     call core%destroy()
-    if ( core%failed() ) call core%print_error_message( error_unit )
     call json%destroy()
-    if ( json%failed() ) call json%print_error_message( error_unit )
     
     end subroutine jc_material
     

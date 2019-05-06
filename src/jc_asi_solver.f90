@@ -44,14 +44,7 @@ contains
     call json%initialize()
     
     ! parse the json file
-    error_code = error_code+1
     call json%load_file( filename = dir//filename )
-    error_code = error_code+1
-    if ( json%failed() ) then
-        call json%print_error_message( error_unit )
-        call error_out( 'An error occurred during parse JSON file',terminate=.true. )
-    end if
-    call progress_out
     
     allocate ( have_mean_flow(n_zone),is_porous(n_zone),wave_flag(n_zone),n_wave(n_zone) )
     
@@ -82,13 +75,13 @@ contains
         error_code = error_code+1
         call json%get( 'solver.asiSetting.zone.'//clean_str(zone_id(i))//'.waveFlag', wave_flag(i), found )
         if ( .not.found ) call error_out( 'Must specify wave flag, please check: '&
-                                        //'solver.asiSetting.zone.'//clean_str(zone_id(i))//'.waveFlag',exit_if_error )
+                                    //'solver.asiSetting.zone.'//clean_str(zone_id(i))//'.waveFlag',exit_if_error )
         call progress_out
         
         error_code = error_code+1
         call json%get( 'solver.asiSetting.zone.'//clean_str(zone_id(i))//'.numWave', n_wave(i), found )
         if ( .not.found ) call error_out( 'Must specify number of waves, please check: '&
-                                        //'solver.asiSetting.zone.'//clean_str(zone_id(i))//'.numWave',exit_if_error )
+                                    //'solver.asiSetting.zone.'//clean_str(zone_id(i))//'.numWave',exit_if_error )
         call progress_out
         
         call json%get( 'solver.asiSetting.zone.'//clean_str(zone_id(i))//'.haveMeanFlow', have_mean_flow(i), found )
@@ -103,7 +96,6 @@ contains
     
     ! clean up
     call json%destroy()
-    if ( json%failed() ) call json%print_error_message( error_unit )
     
     end subroutine jc_asi_solver
     

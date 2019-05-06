@@ -9,10 +9,9 @@ module jc_grid_control_mod
 
     use json_module, CK => json_CK, IK => json_IK, LK => json_LK
     use, intrinsic :: iso_fortran_env,  only: error_unit
-    use jc_error_out_mod
-    use jc_progress_out_mod
     use common_data,                    only: exit_if_error,dir,filename,error_code,&
                                             grid_file,grid_type
+    use output_mod
                                         
     implicit none
 
@@ -40,14 +39,7 @@ contains
     call json%initialize()
     
     ! parse the json file
-    error_code = error_code+1
     call json%load_file( filename = dir//filename )
-    error_code = error_code+1
-    if ( json%failed() ) then
-        call json%print_error_message( error_unit )
-        call error_out( 'An error occurred during parse JSON file',terminate=.true. )
-    end if
-    call progress_out
     
     call json%get( 'gridControl.space', str_temp, found )
     error_code = error_code+1
@@ -104,7 +96,6 @@ contains
     
     ! clean up
     call json%destroy()
-    if ( json%failed() ) call json%print_error_message( error_unit )
     
     end subroutine jc_grid_control
     

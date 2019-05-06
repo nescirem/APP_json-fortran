@@ -1,14 +1,18 @@
 ! createdDate:  2018-12-24T03:24:00
 ! modifiedDate: 2019-05-01T21:29:00
 {
+	"createdDate":"2018-12-24T03:24:00.000Z",
+	"lastUpdate": "2019-05-05T16:34:41.000Z",
 	"log": {
-        "logPath": "./",
-        "logLevel": "warning"
+        "path": "./",
+		"filename": "apiLog.log",
+        "level": "none"
     },
+	"apiVersion": "0.0",
 	"grid": [
 		{
 			"fileName": "case.cgns",
-			"fileType": "cgns",
+			!"fileType": "cgns",
 			"zone": {
 				"11":{"name": "air"},
 				"12":{"name": "porous"}
@@ -46,7 +50,6 @@
 	"strategy": {
         "time": "transient",
 		"timeSetting": {
-            "formulation": "explicit",
             "timeStart": 0.0,
             "timeEnd": 1.0,
 			"deltaT": 1e-6

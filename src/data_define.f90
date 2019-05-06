@@ -15,6 +15,11 @@ module parameters
     integer,parameter       :: dp = kind(1.0d0)
     integer,parameter       :: sp = kind(1.0e0)
     
+    ! GTEA-JC API version
+    integer,parameter       :: main_version = 0
+    integer,parameter       :: sub_version = 0
+    
+    
 end module parameters
     
     
@@ -26,8 +31,20 @@ module common_data
         
     integer                                     :: error_code = 0
     
-    ! debug
+    
+    ! API relevant
+    !! debug
     logical                                     :: exit_if_error
+    !! API log out
+    integer                                     :: log_level    ! 0="none" | 1="error" | 2="warning" | 3="info" | 4 ="debug"
+    character(:),allocatable                    :: log_file     ! = log_path//log_file_name
+    !! API version
+    type APIversion
+        character(:),allocatable                :: string       ! = main_version.sub_version
+        integer                                 :: main = main_version
+        integer                                 :: sub = sub_version
+    end type
+    type(APIversion),target                    :: api_version,file_version
         
     ! working directory and control file name
     character(:),allocatable                    :: dir          ! working directory
@@ -85,6 +102,12 @@ module common_data
     integer,pointer,dimension(:)                :: transient_formulation ! 1=explicit, 2=implicit
     real(dp),pointer,dimension(:)               :: delta_T
     integer,pointer,dimension(:)                :: gradient
+    
+    ! boundary relevant settings
+    character(len=128),pointer,dimension(:)     :: b_name
+    integer,pointer,dimension(:)                :: b_type,sub_b_type
+    !! DPM boundary
+    !! 
         
         
 end module common_data

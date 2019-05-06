@@ -15,14 +15,18 @@
     
 program jc_example_usage
     
-    use jc_ASI_mod
+    use jc_api_mod,                     only: jc_api
+#include "jc_asi_mods.inc"
     use common_data,                    only: exit_if_error,dir,filename
     
     implicit none
     
-    exit_if_error = .false.
-    dir = ' ../files/inputs/'
+    exit_if_error = .true.
+    dir = '../files/inputs/'
     filename = 'case_control.json'
+    
+    ! API prepare
+    call jc_api
     
     ! input grid information
     call jc_grid
