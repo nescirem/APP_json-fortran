@@ -51,7 +51,6 @@ contains
     
     ! allocate strategy settings
     allocate ( transient_formulation(n_zone),delta_T(n_zone),gradient(n_zone) )
-    call progress_out
     
     ! get the time discrete strategy
     error_code = error_code+1
@@ -65,7 +64,6 @@ contains
     case default
         call error_out( 'Unknown time discrete stategy "'//str_temp//'", please check: strategy.time',exit_if_error )
     end select
-    call progress_out
     
     ! get the global settings of the time discrete strategy
     is_tf_setted(:) = .false.
@@ -86,21 +84,18 @@ contains
             end select
             is_tf_setted(:) = .true.
         end if
-        call progress_out
         
         error_code = error_code+1
         call json%get( 'strategy.timeSetting.timeStart', real_temp, found )
         if ( .not.found ) call error_out( 'Must specify the start time, '&
                                 //'please check: strategy.timeSetting.timeStart',exit_if_error )
         time_start = real_temp
-        call progress_out
         
         error_code = error_code+1
         call json%get( 'strategy.timeSetting.timeEnd', real_temp, found )
         if ( .not.found ) call error_out( 'Must specify the start time, '&
                                 //'please check: strategy.timeSetting.timeEnd',exit_if_error )
         time_end = real_temp
-        call progress_out
         
         call json%get( 'strategy.timeSetting.deltaT', real_temp, found )
         if ( found ) then
@@ -108,8 +103,7 @@ contains
             is_dt_setted(:) = .true.
         end if
         
-    endif
-    call progress_out
+    end if
     
     ! get the global settings of the gardient solution strategy
     error_code = error_code+1
@@ -127,7 +121,6 @@ contains
         end select
         is_gs_setted(:) = .true.
     end if
-    call progress_out
     
     ! get the discrete strategy settings of each zone 
     error_code = error_code+1
@@ -168,14 +161,12 @@ contains
         end if
         
     end do
-    call progress_out
     
     ! check if there missing settings in some zone 
     error_code = error_code+1
     if ( any( is_dt_setted==.false. ) ) call error_out( 'Must set deltaT for each zone',exit_if_error )
     if ( any( is_gs_setted==.false. ) ) call error_out( 'Must set gardient strategy for each zone',exit_if_error )
     if ( any( is_tf_setted==.false. ) ) call error_out( 'Must set time formulation strategy for each zone',exit_if_error )
-    call progress_out
     
     ! clean up
     call json%destroy()

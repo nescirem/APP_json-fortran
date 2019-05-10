@@ -36,7 +36,7 @@ contains
     type(json_value),pointer    :: p            !! a pointer for low-level manipulations
     
     integer(IK)                 :: var_type
-    character(len=32)           :: str_temp
+    
     
     call info_out( 'Parse grid info' )
     
@@ -48,7 +48,7 @@ contains
     call core%initialize()
     
     ! get num of grid files
-    call debug_out( 'Get: "grid" ' )
+    call debug_out( 'Get:','grid' )
     call json%get( 'grid', p )
     if ( json%failed() ) call json%print_error_message( error_unit )
     
@@ -56,7 +56,6 @@ contains
     error_code = error_code+1
     call core%info( p, var_type=var_type, n_children=n_grid )
     if ( n_grid==0 ) call error_out( 'Grid information is required, please check: grid',exit_if_error )
-    call progress_out
     
     error_code = error_code+1
     call debug_out( 'Check value type in "grid" if it is object or array' )
@@ -67,14 +66,12 @@ contains
         allocate ( grid_file(n_grid),grid_type(n_grid) )
         call parse_grid( p )
     case ( json_array )
-        write (str_temp,*) n_grid
-        call debug_out( 'The value type in "grid" is array, allocate '//clean_str(str_temp)//' grid file' )
+        call debug_out( 'The value type in "grid" is array, allocate',n_grid,'grid file' )
         allocate ( grid_file(n_grid),grid_type(n_grid) )
         call parse_grids( p )
     case default
         call error_out( 'Unknown structure, please check: grid',exit_if_error )
     end select
-    call progress_out
     
     ! clean up
     call core%destroy()
@@ -99,7 +96,6 @@ contains
     
     integer                     :: i            !! counter
     character(len=16)           :: i_str
-    character(len=32)           :: i_temp_str
     integer(IK)                 :: var_type
     character(kind=CK,len=:),allocatable        :: str_temp
     logical                                     :: found,is_unique
@@ -119,7 +115,6 @@ contains
     else
         call error_out( 'Must specify grid file name, please check: grid.fileName',exit_if_error )
     end if
-    call progress_out
     
     ! get grid file type
     call info_out( 'Get the grid file type' )
@@ -140,25 +135,21 @@ contains
     else
         grid_type(1) = 2 ! default cgns
         call warning_out( 'Haven''t define "grid.fileType", the grid file type was set to default: "cgns"' )
-    endif
-    call progress_out
+    end if
     
     ! get number of zone
     call info_out( 'Get the number of zone' )
     error_code = error_code+1
-    call debug_out( 'Get: "grid.zone" ' )
+    call debug_out( 'Get:','grid.zone' )
     call core%get( p_local,'zone', p_lower_1 )
     if ( core%failed() ) call core%print_error_message( error_unit )
     call core%info( p_lower_1, var_type=var_type, n_children=n_zone )
     if ( n_zone==0 ) call error_out( 'At least one zone in the grid file',exit_if_error )
-    write (i_temp_str,*) n_zone
-    call debug_out( 'The number of zone is '//clean_str(i_temp_str) )
-    call progress_out
+    call debug_out( 'The number of zone is',n_zone )
     
     ! allocate zone data
     call debug_out( 'Allocate the zone data' )
     allocate( zone_id(n_zone), zone_name(n_zone),zone_type(n_zone) )
-    call progress_out
     
     ! parase the name/id of each elements
     call info_out( 'Parase the id of each zone' )
@@ -168,9 +159,8 @@ contains
         if ( core%failed() ) call core%print_error_message( error_unit )
         call core%info( p_temp, name=str_temp )
         write( zone_id(i),'(A)' ) str_temp
-        call debug_out( 'Zone_id('//clean_str(i_str)//'): '//clean_str(zone_id(i)) )
+        call debug_out( 'Zone('//clean_str(i_str)//') ID:',zone_id(i) )
     end do
-    call progress_out
     
     ! check the uniqueness of zones id
     call info_out( 'Check the uniqueness of zones id' )
@@ -178,7 +168,6 @@ contains
     call check_uniqueness( zone_id,size(zone_id),is_unique )
     if ( .not.is_unique ) call error_out( 'Zone ID must be unique.',exit_if_error )
     call debug_out( 'Each zones ID in this grid file is unique' )
-    call progress_out
     
     ! parase zone name
     call info_out( 'get the names of each zone' )
@@ -187,7 +176,6 @@ contains
         if ( core%failed() ) call core%print_error_message( error_unit )
         if ( found ) write( zone_name(i),* ) str_temp
     end do
-    call progress_out
     
     ! clean up
     call core%destroy()
@@ -211,7 +199,6 @@ contains
     
     integer                     :: i,i_grid            !! counter
     character(len=16)           :: i_str,i_zone_str
-    character(len=32)           :: i_temp_str
     integer                     :: i_zone = 0
     integer                     :: np_zone = 0
     integer(IK)                 :: var_type
@@ -235,7 +222,6 @@ contains
         else
             call error_out( 'Must specify grid file name, please check: grid.fileName',exit_if_error )
         end if
-        call progress_out
         
         error_code = error_code+1
         call core%get( p_local,'@['//clean_str(i_str)//'].fileType', str_temp, found )
@@ -257,7 +243,6 @@ contains
             call warning_out( 'Haven''t define "grid['//clean_str(i_str)&
                     //'].fileType", the grid file type was set to default: "cgns"' )
         end if
-        call progress_out
     
         ! get num of the zone
         call info_out( 'Get the number of zone' )
@@ -266,19 +251,15 @@ contains
         if ( core%failed() ) call core%print_error_message( error_unit )
         call core%info( p_lower_1, var_type=var_type, n_children=n_zone )
         if ( n_zone==0 ) call error_out( 'At least one zone in each grid file',exit_if_error )
-        call progress_out
         
         np_zone = np_zone+n_zone
         
-    enddo
-    
-    write (i_temp_str,*) np_zone
-    call debug_out( 'Total n_zone is '//clean_str(i_temp_str) )
+    end do
+    call debug_out( 'Total n_zone is',np_zone )
     
     ! allocate zone data
     call debug_out( 'Allocate the zone data' )
     allocate( zone_id(np_zone),zone_name(np_zone),zone_type(np_zone) )
-    call progress_out
     
     ! parase the name/id of each elements
     call info_out( 'Parase the id of each zone' )
@@ -294,10 +275,9 @@ contains
             if ( core%failed() ) call core%print_error_message( error_unit )
             call core%info( p_temp, name=str_temp )
             write( zone_id(i_zone),'(A)' ) str_temp
-            call debug_out( 'Zone_id('//clean_str(i_str)//'): '//clean_str(zone_id(i_zone)) )
+            call debug_out( 'Zone('//clean_str(i_str)//') ID:',zone_id(i_zone) )
         end do
     end do
-    call progress_out
     
     ! check the uniqueness of zones id 
     call info_out( 'Check the uniqueness of zones id' )
@@ -305,7 +285,6 @@ contains
     call check_uniqueness( zone_id,size(zone_id),is_unique )
     if ( .not.is_unique ) call error_out( 'Zone ID must be unique.',exit_if_error )
     call debug_out( 'Each zones ID in all grid file is unique' )
-    call progress_out
     
     ! parase zone name
     call info_out( 'get the names of each zone' )
@@ -323,11 +302,9 @@ contains
             if ( found ) write( zone_name(i_zone),* ) str_temp
         end do
     end do
-    call progress_out
     
     n_zone = np_zone
-    write (i_temp_str,*) n_zone
-    call debug_out( 'Total n_zone is '//clean_str(i_temp_str) )
+    call debug_out( 'Total n_zone is',n_zone )
     
     ! clean up
     call core%destroy()

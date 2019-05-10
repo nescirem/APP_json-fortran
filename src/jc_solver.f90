@@ -36,31 +36,39 @@ contains
     logical                                     :: found
     
     
+    call info_out( 'Parse base solver settings' )
     call json%initialize()
     
     ! parse the json file
+    call debug_out( 'Load form file: "'//dir//filename//'"' )
     call json%load_file( filename = dir//filename )
     
     error_code = error_code+1
+    call debug_out( 'Get:','solver.problemType' )
     call json%get( 'solver.problemType', str_temp, found )
     if ( .not.found ) call error_out( 'Must specify problem solver, please check: solver.problemType',exit_if_error )
     select case ( str_temp )
     case ( 'acoustic solid interaction' )
         problem_type = 1
+        call debug_out( 'The problem_type is "ASI"' )
     case ( 'ASI' )
         problem_type = 1
+        call debug_out( 'The problem_type is "ASI"' )
     case ( 'CAA' )
         problem_type = 2
-    case ( 'CFD' )
+        call debug_out( 'The problem_type is "CAA"' )
+    case ( 'NHT' )
         problem_type = 3
+        call debug_out( 'The problem_type is "NHT"' )
     case ( 'chemical kinetics' )
         problem_type = 4
+        call debug_out( 'The problem_type is "chemical kinetics"' )
     case ( 'structural mechanics' )
         problem_type = 5
+        call debug_out( 'The problem_type is "structural mechanics"' )
     case default
         call error_out( 'Unknown problem solver "'//str_temp//'", please check: solver.problemType',exit_if_error )
     end select
-    call progress_out
     
     ! clean up
     call json%destroy()

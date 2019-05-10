@@ -14,6 +14,10 @@ module check_uniqueness_mod
         module procedure check_uniqueness_ivec 
         module procedure check_uniqueness_cvec
     end interface
+    
+    private
+    
+    public :: check_uniqueness
  
 contains
     !====================================================================
@@ -40,7 +44,7 @@ contains
             if ( c_int==b_int ) then
                 is_unique = .false. 
                 exit baseloop
-            endif
+            end if
         end do
     end do baseloop
     
@@ -75,9 +79,10 @@ contains
             if ( c_str==b_str ) then
                 is_unique = .false. 
                 exit baseloop
-            endif
+            end if
         end do
     end do baseloop
+    
     
     end subroutine check_uniqueness_cvec
     

@@ -41,20 +41,24 @@ contains
     character(len=64),pointer,dimension(:)      :: vec_material_id
     logical                                     :: found,is_unique
     
+    
+    call info_out( 'Parse base materials info' )
+    
     call json%initialize()
     
     ! parse the json file
+    call debug_out( 'Load form file: "'//dir//filename//'"' )
     call json%load_file( filename = dir//filename )
     call core%initialize()
     
     ! get num of the material
     error_code = error_code+1
+    call debug_out( 'Get:','material' )
     call json%get( 'material', p )
     if ( json%failed() ) call json%print_error_message( error_unit )
     call core%info( p, var_type=var_type, n_children=n_material )
     if ( n_material==0 ) call error_out( 'Material property is required, please check: material',exit_if_error )
     allocate ( MTR(n_material) ) 
-    call progress_out
     
     ! parase the id of each material
     error_code = error_code+1
@@ -63,18 +67,17 @@ contains
         call core%get( p,'@('//clean_str(i_str)//')',p_temp )
         if ( core%failed() ) call core%print_error_message( error_unit )
         call core%info( p_temp, name=MTR(i)%material_id )
+        call debug_out( 'Material('//clean_str(i_str)//') ID:',MTR(i)%material_id )
     end do
-    call progress_out
     
     ! check the uniqueness of material id 
     allocate ( vec_material_id(n_material) )
     do i=1,n_material
         vec_material_id(i) = MTR(i)%material_id
-    enddo
+    end do
     error_code = error_code+1
     call check_uniqueness( vec_material_id,size(vec_material_id),is_unique )
     if ( .not.is_unique ) call error_out( 'Material ID must be unique.',exit_if_error )
-    call progress_out
     
     ! get the material base information
     error_code = error_code+1
@@ -88,7 +91,6 @@ contains
                             //' please check: material.'//clean_str(MTR(i)%material_id)//'.rho',exit_if_error )
         
     end do
-    call progress_out
     
     ! clean up
     call core%destroy()

@@ -41,28 +41,41 @@ contains
     character(len=16)                           :: i_str
     
     
+    call info_out( 'Parse zones information' )
+    
     call json%initialize()
     
     allocate ( zone_material_id(n_zone),is_homogeneous(n_zone) )
     
     ! parse the json file
+    call debug_out( 'Load form file: "'//dir//filename//'"' )
     call json%load_file( filename = dir//filename )
     
     error_code = error_code+1
     do i=1,n_zone
+        
+        call debug_out( 'Get:','zone.'//clean_str(zone_id(i))//'.material' )
         call json%get( 'zone.'//clean_str(zone_id(i))//'.material', str_temp, found )
         if ( found ) then
             write( zone_material_id(i),* ) str_temp
+            call debug_out( 'The material ID in zone["'//clean_str(zone_id(i))&
+                //'"] is',zone_material_id(i) )
         else !if ( .not.found ) then
             call error_out( 'Must specify zone material, please check: zone.'&
                     //clean_str(zone_id(i))//'.material',exit_if_error )
-        endif
+        end if
         
+        call debug_out( 'Get:','zone.'//clean_str(zone_id(i))//'.isHomogeneous' )
         call json%get( 'zone.'//clean_str(zone_id(i))//'.isHomogeneous',is_homogeneous(i), found )
-        if ( .not.found ) is_homogeneous(i) = .true. ! default homogeneous
-    enddo
-    call progress_out
+        if ( found ) then
+            call debug_out( 'isHomogeneous=',is_homogeneous(i) )
+        else !if ( .not.found ) then
+            is_homogeneous(i) = .true. ! default homogeneous
+            call warning_out( 'Haven''t define "zone.'//clean_str(zone_id(i))//'.isHomogeneous",'&
+                    //' default homogeneous' )
+        end if
         
+    end do
     
     ! clean up
     call json%destroy()

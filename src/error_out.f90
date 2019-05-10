@@ -2,7 +2,17 @@
 !> author: nescirem
 !  date: 04/28/2019
 !
-!  Module print error message for debug.
+!  Module that print error message and write it to the log file.
+!
+!  call error_out( msg, terminate )
+!
+!@note Example Useage:
+!@note ...
+!@note use jc_error_out_mod
+!@note ...
+!@note call error_out( character_string )
+!@note call error_out( character_string, logical )
+!@note ...
 !
     
 module jc_error_out_mod
@@ -24,7 +34,7 @@ contains
     !====================================================================
     
     !-------------------------------------------------------------------+
-    subroutine jc_error_out ( err_message,terminate )                   !
+    subroutine jc_error_out ( msg,terminate )                           !
     !-------------------------------------------------------------------+
     
     use common_data,                    only: error_code
@@ -32,14 +42,14 @@ contains
     
     implicit none
 
-    character(len=*),intent(in)         :: err_message
+    character(len=*),intent(in)         :: msg
     logical,optional,intent(in)         :: terminate
     character(len=32)                   :: error_code_str
     
     integer,parameter                   :: set_len = 45
     logical,parameter                   :: default_terminate = .false.
     
-    integer                             :: err_message_len
+    integer                             :: msg_len
     real                                :: nr_parts
     integer                             :: n_parts,i
     integer                             :: unit,istat
@@ -49,7 +59,7 @@ contains
         
         ! output to log file
         open (  NEWUNIT=unit,FILE=log_file,STATUS='OLD',POSITION='APPEND',IOSTAT=istat )
-        write (unit,"(A)") '[ERROR] '//clean_str(err_message)
+        write ( unit,"(A)" ) '[ERROR] '//clean_str(msg)
         if ( istat==0 ) close( UNIT=unit, IOSTAT=istat )
         
         
@@ -61,8 +71,8 @@ contains
         end if
     
         ! scatter the error message string if it is too long
-        err_message_len = len( clean_str(err_message) )
-        nr_parts = real(err_message_len)/real(set_len)
+        msg_len = len( clean_str(msg) )
+        nr_parts = real(msg_len)/real(set_len)
         n_parts = ceiling( nr_parts )
     
         separate = .true.
@@ -70,22 +80,20 @@ contains
     
         ! error output
         write( error_code_str,* ) error_code
-        write( error_unit,"(A)" )   ''
-    
         ! display error message
         write( error_unit,"(A,/,A)" )           'ERROR',&
                                                 ' |-code: '//clean_str(error_code_str)
         if ( separate ) then
-            write( error_unit,"(A)" )           ' |-message: '//err_message(1:set_len)
+            write( error_unit,"(A)" )           ' |-message: '//msg(1:set_len)
             do i=1,n_parts-1
                 if ( i==n_parts-1) then
-                    write(error_unit,"(A,/)")   '            '//err_message(i*set_len+1:)
+                    write(error_unit,"(A)")     '            '//msg(i*set_len+1:)
                     exit
                 end if
-                write( error_unit,"(A)" )       '            '//err_message(i*set_len+1:(i+1)*set_len)
-            enddo
+                write( error_unit,"(A)" )       '            '//msg(i*set_len+1:(i+1)*set_len)
+            end do
         else !if ( .not.separate ) then
-            write( error_unit,"(A,/)" )         ' |-message: '//clean_str(err_message)
+            write( error_unit,"(A)" )           ' |-message: '//clean_str(msg)
         end if
     
         if ( l_terminate ) stop                 'Program terminated.'
@@ -167,7 +175,7 @@ contains
     
     call date_and_time(DATE=date,TIME=time,ZONE=zone)
     time_RFC3339 = date(1:4)//'-'//date(5:6)//'-'//date(7:8)&
-                    //'T'//time(1:2)//':'//time(3:4)//':'//time(5:10)&
+                    //'T'//time(1:2)//':'//time(3:4)//':'//time(5:9)&
                     //zone(1:3)//':'//zone(4:5)
     
     end function time_RFC3339

@@ -68,7 +68,6 @@ contains
         if ( found ) MTR(i)%ambient_pressure = real_temp
         
     end do
-    call progress_out
     
     ! clean up
     call json%destroy()

@@ -2,7 +2,7 @@
 !> author: nescirem
 !  date: 05/06/2019
 !
-!  Module print warning message for debug.
+!  Module print warning message and write it to the log file.
 !
     
 module jc_warning_out_mod
@@ -20,18 +20,18 @@ contains
     !====================================================================
     
     !-------------------------------------------------------------------+
-    subroutine warning_out ( warning_message )                            !
+    subroutine warning_out ( msg )                                      !
     !-------------------------------------------------------------------+
     
     use functions,                      only: clean_str
     
     implicit none
 
-    character(len=*),intent(in)         :: warning_message
+    character(len=*),intent(in)         :: msg
     
     integer,parameter                   :: set_len = 45
     
-    integer                             :: warning_message_len
+    integer                             :: msg_len
     real                                :: nr_parts
     integer                             :: n_parts,i
     integer                             :: unit,istat
@@ -40,34 +40,31 @@ contains
     if ( log_level>=2 ) then
         
         ! output to log file
-        open (  NEWUNIT=unit,FILE=log_file,STATUS='OLD',POSITION='APPEND',IOSTAT=istat )
-        write (unit,"(A)") '[WARNING] '//clean_str(warning_message)
+        open(  NEWUNIT=unit, FILE=log_file, STATUS='OLD', POSITION='APPEND', IOSTAT=istat )
+        write( unit,"(A)" ) '[WARNING] '//clean_str(msg)
         if ( istat==0 ) close( UNIT=unit, IOSTAT=istat )
     
         ! scatter the warning message string if it is too long
-        warning_message_len = len( clean_str(warning_message) )
-        nr_parts = real(warning_message_len)/real(set_len)
+        msg_len = len( clean_str(msg) )
+        nr_parts = real(msg_len)/real(set_len)
         n_parts = ceiling( nr_parts )
     
         separate = .true.
-        if ( n_parts == 1 ) separate = .false.
-    
-        ! warning output
-        write( error_unit,"(A)" )   ''
+        if ( n_parts==1 ) separate = .false.
     
         ! display warning message
         write( error_unit,"(A)" )               'WARNING'
         if ( separate ) then
-            write( error_unit,"(A)" )           ' |-message: '//warning_message(1:set_len)
+            write( error_unit,"(A)" )           ' |-message: '//msg(1:set_len)
             do i=1,n_parts-1
                 if ( i==n_parts-1) then
-                    write(error_unit,"(A,/)")   '            '//warning_message(i*set_len+1:)
+                    write(error_unit,"(A)")     '            '//msg(i*set_len+1:)
                     exit
                 end if
-                write( error_unit,"(A)" )       '            '//warning_message(i*set_len+1:(i+1)*set_len)
-            enddo
+                write( error_unit,"(A)" )       '            '//msg(i*set_len+1:(i+1)*set_len)
+            end do
         else !if ( .not.separate ) then
-            write( error_unit,"(A,/)" )         ' |-message: '//clean_str(warning_message)
+            write( error_unit,"(A)" )           ' |-message: '//clean_str(msg)
         end if
         
     end if

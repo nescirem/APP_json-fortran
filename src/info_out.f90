@@ -2,7 +2,7 @@
 !> author: nescirem
 !  date: 05/06/2019
 !
-!  Module print info message for debug.
+!  Module print info message and write it to the log file.
 !
     
 module jc_info_out_mod
@@ -40,8 +40,8 @@ contains
     if ( log_level>=3 ) then
         
         ! output to log file
-        open (  NEWUNIT=unit,FILE=log_file,STATUS='OLD',POSITION='APPEND',IOSTAT=istat )
-        write (unit,"(A)") '[INFO] '//clean_str(info_message)
+        open (  NEWUNIT=unit, FILE=log_file, STATUS='OLD', POSITION='APPEND', IOSTAT=istat )
+        write( unit,"(A)" ) '[INFO] '//clean_str(info_message)
         if ( istat==0 ) close( UNIT=unit, IOSTAT=istat )
     
         ! scatter the info message string if it is too long
@@ -50,10 +50,7 @@ contains
         n_parts = ceiling( nr_parts )
     
         separate = .true.
-        if ( n_parts == 1 ) separate = .false.
-    
-        ! info output
-        write( error_unit,"(A)" )   ''
+        if ( n_parts==1 ) separate = .false.
     
         ! display info message
         write( error_unit,"(A)" )               'INFO'
@@ -61,13 +58,13 @@ contains
             write( error_unit,"(A)" )           ' |-message: '//info_message(1:set_len)
             do i=1,n_parts-1
                 if ( i==n_parts-1) then
-                    write(error_unit,"(A,/)")   '            '//info_message(i*set_len+1:)
+                    write(error_unit,"(A)")     '            '//info_message(i*set_len+1:)
                     exit
                 end if
                 write( error_unit,"(A)" )       '            '//info_message(i*set_len+1:(i+1)*set_len)
-            enddo
+            end do
         else !if ( .not.separate ) then
-            write( error_unit,"(A,/)" )         ' |-message: '//clean_str(info_message)
+            write( error_unit,"(A)" )           ' |-message: '//clean_str(info_message)
         end if
         
     end if

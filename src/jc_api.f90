@@ -55,9 +55,8 @@ contains
             call core%print_error_message( error_unit )
             write( error_unit,"(A,\)" ) 'An error occurred during json core initialize'
             stop                        'Program terminated.'
-        endif
+        end if
     end if
-    call progress_out
     
     ! log level
     call json%get( 'log.level', str_temp, found )

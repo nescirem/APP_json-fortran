@@ -11,7 +11,6 @@ module output_mod
     use jc_warning_out_mod
     use jc_info_out_mod
     use jc_debug_out_mod
-    use jc_progress_out_mod
     
     implicit none
     

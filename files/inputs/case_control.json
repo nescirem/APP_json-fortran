@@ -1,13 +1,11 @@
-! createdDate:  2018-12-24T03:24:00
-! modifiedDate: 2019-05-01T21:29:00
 {
-	"createdDate":"2018-12-24T03:24:00.000Z",
-	"lastUpdate": "2019-05-05T16:34:41.000Z",
+	"createdDate":"2018-12-24T03:24:00.000+08:00",
+	"lastUpdate": "2019-05-05T16:34:41.000+08:00",
 	"log": {
-        "path": "./",
+    "path": "./",
 		"filename": "apiLog.log",
-        "level": "none"
-    },
+    "level": "debug"
+  },
 	"apiVersion": "0.0",
 	"grid": [
 		{
@@ -48,38 +46,40 @@
 		}
 	},
 	"strategy": {
-        "time": "transient",
+    "time": "transient",
 		"timeSetting": {
-            "timeStart": 0.0,
-            "timeEnd": 1.0,
+      "timeStart": 0.0,
+      "timeEnd": 1.0,
 			"deltaT": 1e-6
-        },
+    },
 		"gradient": "linear",
 		"CFL": null,
-        ! OR set each zone separately, which will replace the overall settings
+    ! OR set each zone separately, which will replace the overall settings
 		"zone": {
-            "11": {"gradient": "linear","timeFormulation": "explicit", "deltaT": 1e-6},
+      "11": {"gradient": "linear","timeFormulation": "explicit", "deltaT": 1e-6},
 			"12": {"gradient": "least squares","timeFormulation": "implicit", "deltaT": 1e-6}
-        }
-    },
+    }
+  },
 	"zone": {
 		"11": {"material":"311","isHomogeneous": true},
 		"12": {"material":"312","isHomogeneous": true}
 	},
 	"boundary": {
-        "5011": {"name": "in","type": "acousticSource",
-				"acousticSourceSetting": {"type": "gauss pulse", "amplitude": 1, "frequency": 8000}
+    "5011": {"name": "in","type": "acousticSource",
+	    "acousticSourceSetting": {"type": "gauss pulse", "amplitude": 1, "frequency": 8000}
 		},
-        "5012": {"name": "wall_a","type": "hard wall"},
+    "5012": {"name": "wall_a","type": "hard wall"},
 		"5013": {"name": "inf_a","type": "interface",
-				"correspondingFace":"inf_p",
-				"isCorrespondenceNode": true},
-        "5014": {"name": "inf_p","type": "interface",
-				"correspondingFace":"inf_a",
-				"isCorrespondenceNode": true},
-        "5015": {"name": "wall_p","type": "hard wall"},
-		"5016":	{"name": "out","type": "transmissive"}
+			"correspondingFace":"inf_p",
+      "isCorrespondenceNode": true
+		},
+    "5014": {"name": "inf_p","type": "interface",
+			"correspondingFace":"inf_a",
+      "isCorrespondenceNode": true
     },
+    "5015": {"name": "wall_p","type": "hard wall"},
+		"5016":	{"name": "out","type": "transmissive"}
+  },
 	"initialize": {
 		"haveFiledSource":true,
 		"isRestart": false

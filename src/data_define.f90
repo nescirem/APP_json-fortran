@@ -28,9 +28,9 @@ module common_data
     use parameters
     
     implicit none
-        
-    integer                                     :: error_code = 0
     
+    
+    integer                                     :: error_code = 0
     
     ! API relevant
     !! debug
@@ -45,7 +45,8 @@ module common_data
         integer                                 :: sub = sub_version
     end type
     type(APIversion),target                    :: api_version,file_version
-        
+    
+    
     ! working directory and control file name
     character(:),allocatable                    :: dir          ! working directory
     character(:),allocatable                    :: filename     ! control file to read

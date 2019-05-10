@@ -262,3 +262,7 @@ paket-files/
 __pycache__/
 *.pyc
 *.u2d
+*.advixeexp
+*.advixeproj
+*.dflgadvixe
+*.infoadvixe
