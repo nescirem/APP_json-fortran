@@ -47,13 +47,15 @@ contains
     error_code = error_code+1
     if ( json%failed() ) then
         call json%print_error_message( error_unit )
-        write( error_unit,"(G0,\)" ) 'An error occurred during parse JSON file'
+        write( error_unit,"(G0)" )  'An error occurred during parse JSON file'
+        write( error_unit,"(G0)" )  ''
         stop                        'Program terminated.'
     else
         call core%initialize()
         if ( core%failed() ) then
             call core%print_error_message( error_unit )
-            write( error_unit,"(G0,\)" ) 'An error occurred during json core initialize'
+            write( error_unit,"(G0)" )  'An error occurred during json core initialize'
+            write( error_unit,"(G0)" )  ''
             stop                        'Program terminated.'
         end if
     end if

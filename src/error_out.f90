@@ -81,19 +81,19 @@ contains
         ! error output
         write( error_code_str,* ) error_code
         ! display error message
-        write( error_unit,"(G0,/,G0)" )           'ERROR',&
-                                                ' |-code: '//clean_str(error_code_str)
+        write( error_unit,"(G0" )               'ERROR'
+        write( error_unit,"(G0)")               ' |-code: '//clean_str(error_code_str)
         if ( separate ) then
-            write( error_unit,"(G0)" )           ' |-message: '//msg(1:set_len)
+            write( error_unit,"(G0)" )          ' |-message: '//msg(1:set_len)
             do i=1,n_parts-1
                 if ( i==n_parts-1) then
-                    write(error_unit,"(G0)")     '            '//msg(i*set_len+1:)
+                    write(error_unit,"(G0)")    '            '//msg(i*set_len+1:)
                     exit
                 end if
-                write( error_unit,"(G0)" )       '            '//msg(i*set_len+1:(i+1)*set_len)
+                write( error_unit,"(G0)" )      '            '//msg(i*set_len+1:(i+1)*set_len)
             end do
         else !if ( .not.separate ) then
-            write( error_unit,"(G0)" )           ' |-message: '//clean_str(msg)
+            write( error_unit,"(G0)" )          ' |-message: '//clean_str(msg)
         end if
     
         if ( l_terminate ) stop                 'Program terminated.'
