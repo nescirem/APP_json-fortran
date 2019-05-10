@@ -16,7 +16,7 @@
 program jc_example_usage
     
     use jc_api_mod,                     only: jc_api
-#include "jc_asi_mods.inc"
+    include 'jc_asi_mods.inc'
     use common_data,                    only: exit_if_error,dir,filename
     
     implicit none

@@ -36,8 +36,8 @@ contains
     logical                                     :: found 
     
     
-    write( main_version,"(I)" ) api_version%main
-    write( sub_version,"(I)" ) api_version%sub
+    write( main_version,"(G0)" ) api_version%main
+    write( sub_version,"(G0)" ) api_version%sub
     api_version%string = clean_str(main_version)//'.'//clean_str(sub_version)
     
     call json%initialize()
@@ -47,13 +47,13 @@ contains
     error_code = error_code+1
     if ( json%failed() ) then
         call json%print_error_message( error_unit )
-        write( error_unit,"(A,\)" ) 'An error occurred during parse JSON file'
+        write( error_unit,"(G0,\)" ) 'An error occurred during parse JSON file'
         stop                        'Program terminated.'
     else
         call core%initialize()
         if ( core%failed() ) then
             call core%print_error_message( error_unit )
-            write( error_unit,"(A,\)" ) 'An error occurred during json core initialize'
+            write( error_unit,"(G0,\)" ) 'An error occurred during json core initialize'
             stop                        'Program terminated.'
         end if
     end if
@@ -73,7 +73,7 @@ contains
         case ( 'debug' )
             log_level = 4
         case default
-            write( error_unit,"(A)" ) 'Unknown log level, use DEFAULT "warning" instead'
+            write( error_unit,"(G0)" ) 'Unknown log level, use DEFAULT "warning" instead'
             log_level = 2
         end select
     else !if ( .not.found ) then

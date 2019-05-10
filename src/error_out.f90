@@ -59,7 +59,7 @@ contains
         
         ! output to log file
         open (  NEWUNIT=unit,FILE=log_file,STATUS='OLD',POSITION='APPEND',IOSTAT=istat )
-        write ( unit,"(A)" ) '[ERROR] '//clean_str(msg)
+        write ( unit,"(G0)" ) '[ERROR] '//clean_str(msg)
         if ( istat==0 ) close( UNIT=unit, IOSTAT=istat )
         
         
@@ -81,19 +81,19 @@ contains
         ! error output
         write( error_code_str,* ) error_code
         ! display error message
-        write( error_unit,"(A,/,A)" )           'ERROR',&
+        write( error_unit,"(G0,/,G0)" )           'ERROR',&
                                                 ' |-code: '//clean_str(error_code_str)
         if ( separate ) then
-            write( error_unit,"(A)" )           ' |-message: '//msg(1:set_len)
+            write( error_unit,"(G0)" )           ' |-message: '//msg(1:set_len)
             do i=1,n_parts-1
                 if ( i==n_parts-1) then
-                    write(error_unit,"(A)")     '            '//msg(i*set_len+1:)
+                    write(error_unit,"(G0)")     '            '//msg(i*set_len+1:)
                     exit
                 end if
-                write( error_unit,"(A)" )       '            '//msg(i*set_len+1:(i+1)*set_len)
+                write( error_unit,"(G0)" )       '            '//msg(i*set_len+1:(i+1)*set_len)
             end do
         else !if ( .not.separate ) then
-            write( error_unit,"(A)" )           ' |-message: '//clean_str(msg)
+            write( error_unit,"(G0)" )           ' |-message: '//clean_str(msg)
         end if
     
         if ( l_terminate ) stop                 'Program terminated.'
@@ -115,14 +115,14 @@ contains
     integer             :: unit,istat
     logical             :: alive
     
-    write( error_unit,"(A)" )   ''
-    write( error_unit,"(A)" )   'Current API Version is: '//api_version%string
-    write( error_unit,"(A)" )   '   file API Version is: '//file_version%string
-    write( error_unit,"(A)" )   ''
-    write( error_unit,"(A,I2)" )'             log level:',log_level
-    write( error_unit,"(A)" )   '              log file: "'//log_file//'"'
-    write( error_unit,"(A)" )   ''
-    write( error_unit,"(A)" )   '     json control file: "'//clean_str(dir//filename)//'"'
+    write( error_unit,"(G0)" )   ''
+    write( error_unit,"(G0)" )   'Current API Version is: '//api_version%string
+    write( error_unit,"(G0)" )   '   file API Version is: '//file_version%string
+    write( error_unit,"(G0)" )   ''
+    write( error_unit,"(G0,I2)" )'             log level:',log_level
+    write( error_unit,"(G0)" )   '              log file: "'//log_file//'"'
+    write( error_unit,"(G0)" )   ''
+    write( error_unit,"(G0)" )   '     json control file: "'//clean_str(dir//filename)//'"'
     
     if ( log_level>0 ) then
         
@@ -134,25 +134,25 @@ contains
             open (  NEWUNIT=unit,FILE=log_file,STATUS='NEW',POSITION='APPEND',IOSTAT=istat )
         end if
         
-        write( unit,"(A)" )     '============================================================'
-        write( unit,"(A)" )     time_RFC3339()
-        write( unit,"(A)" )     'Current API Version is: '//api_version%string
-        write( unit,"(A)" )     '   file API Version is: '//file_version%string
+        write( unit,"(G0)" )     '============================================================'
+        write( unit,"(G0)" )     time_RFC3339()
+        write( unit,"(G0)" )     'Current API Version is: '//api_version%string
+        write( unit,"(G0)" )     '   file API Version is: '//file_version%string
     
         select case ( log_level )   ! 1="error" | 2="warning" | 3="info" | 4 ="debug"
         case ( 1 )
-            write( unit,"(A)" ) '             log level: ERROR'
+            write( unit,"(G0)" ) '             log level: ERROR'
         case ( 2 )
-            write( unit,"(A)" ) '             log level: WARNING'
+            write( unit,"(G0)" ) '             log level: WARNING'
         case ( 3 )
-            write( unit,"(A)" ) '             log level: INFO'
+            write( unit,"(G0)" ) '             log level: INFO'
         case ( 4 )
-            write( unit,"(A)" ) '             log level: DEBUG'
+            write( unit,"(G0)" ) '             log level: DEBUG'
         end select
     
-        write( unit,"(A)" )     '              log file: "'//log_file//'"'
-        write( unit,"(A)" )     '     json control file: "'//clean_str(dir//filename)//'"'
-        write( unit,"(A)" )     '------------------------------------------------------------'
+        write( unit,"(G0)" )     '              log file: "'//log_file//'"'
+        write( unit,"(G0)" )     '     json control file: "'//clean_str(dir//filename)//'"'
+        write( unit,"(G0)" )     '------------------------------------------------------------'
         
         if ( istat==0 ) close( unit=unit, iostat=istat )
         

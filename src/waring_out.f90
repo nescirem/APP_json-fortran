@@ -41,7 +41,7 @@ contains
         
         ! output to log file
         open(  NEWUNIT=unit, FILE=log_file, STATUS='OLD', POSITION='APPEND', IOSTAT=istat )
-        write( unit,"(A)" ) '[WARNING] '//clean_str(msg)
+        write( unit,"(G0)" ) '[WARNING] '//clean_str(msg)
         if ( istat==0 ) close( UNIT=unit, IOSTAT=istat )
     
         ! scatter the warning message string if it is too long
@@ -53,18 +53,18 @@ contains
         if ( n_parts==1 ) separate = .false.
     
         ! display warning message
-        write( error_unit,"(A)" )               'WARNING'
+        write( error_unit,"(G0)" )               'WARNING'
         if ( separate ) then
-            write( error_unit,"(A)" )           ' |-message: '//msg(1:set_len)
+            write( error_unit,"(G0)" )           ' |-message: '//msg(1:set_len)
             do i=1,n_parts-1
                 if ( i==n_parts-1) then
-                    write(error_unit,"(A)")     '            '//msg(i*set_len+1:)
+                    write(error_unit,"(G0)")     '            '//msg(i*set_len+1:)
                     exit
                 end if
-                write( error_unit,"(A)" )       '            '//msg(i*set_len+1:(i+1)*set_len)
+                write( error_unit,"(G0)" )       '            '//msg(i*set_len+1:(i+1)*set_len)
             end do
         else !if ( .not.separate ) then
-            write( error_unit,"(A)" )           ' |-message: '//clean_str(msg)
+            write( error_unit,"(G0)" )           ' |-message: '//clean_str(msg)
         end if
         
     end if

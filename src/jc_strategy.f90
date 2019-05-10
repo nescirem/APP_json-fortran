@@ -35,7 +35,6 @@ contains
     type(json_file)             :: json         !! the JSON structure read from the file
     
     integer                     :: i            !! counter
-    character(len=16)           :: i_str        !! counter in string
     real(kind=RK)               :: real_temp
     character(kind=CK,len=:),allocatable        :: str_temp
     logical                                     :: found
@@ -164,9 +163,9 @@ contains
     
     ! check if there missing settings in some zone 
     error_code = error_code+1
-    if ( any( is_dt_setted==.false. ) ) call error_out( 'Must set deltaT for each zone',exit_if_error )
-    if ( any( is_gs_setted==.false. ) ) call error_out( 'Must set gardient strategy for each zone',exit_if_error )
-    if ( any( is_tf_setted==.false. ) ) call error_out( 'Must set time formulation strategy for each zone',exit_if_error )
+    if ( any( is_dt_setted.eqv..false. ) ) call error_out( 'Must set deltaT for each zone',exit_if_error )
+    if ( any( is_gs_setted.eqv..false. ) ) call error_out( 'Must set gardient strategy for each zone',exit_if_error )
+    if ( any( is_tf_setted.eqv..false. ) ) call error_out( 'Must set time formulation strategy for each zone',exit_if_error )
     
     ! clean up
     call json%destroy()

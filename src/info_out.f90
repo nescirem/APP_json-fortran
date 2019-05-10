@@ -41,7 +41,7 @@ contains
         
         ! output to log file
         open (  NEWUNIT=unit, FILE=log_file, STATUS='OLD', POSITION='APPEND', IOSTAT=istat )
-        write( unit,"(A)" ) '[INFO] '//clean_str(info_message)
+        write( unit,"(G0)" ) '[INFO] '//clean_str(info_message)
         if ( istat==0 ) close( UNIT=unit, IOSTAT=istat )
     
         ! scatter the info message string if it is too long
@@ -53,18 +53,18 @@ contains
         if ( n_parts==1 ) separate = .false.
     
         ! display info message
-        write( error_unit,"(A)" )               'INFO'
+        write( error_unit,"(G0)" )               'INFO'
         if ( separate ) then
-            write( error_unit,"(A)" )           ' |-message: '//info_message(1:set_len)
+            write( error_unit,"(G0)" )           ' |-message: '//info_message(1:set_len)
             do i=1,n_parts-1
                 if ( i==n_parts-1) then
-                    write(error_unit,"(A)")     '            '//info_message(i*set_len+1:)
+                    write(error_unit,"(G0)")     '            '//info_message(i*set_len+1:)
                     exit
                 end if
-                write( error_unit,"(A)" )       '            '//info_message(i*set_len+1:(i+1)*set_len)
+                write( error_unit,"(G0)" )       '            '//info_message(i*set_len+1:(i+1)*set_len)
             end do
         else !if ( .not.separate ) then
-            write( error_unit,"(A)" )           ' |-message: '//clean_str(info_message)
+            write( error_unit,"(G0)" )           ' |-message: '//clean_str(info_message)
         end if
         
     end if
