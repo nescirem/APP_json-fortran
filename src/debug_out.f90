@@ -77,8 +77,6 @@ contains
         if ( n_parts == 1 ) separate = .false.
     
         ! debug output
-        write( error_unit,"(G0)" )   ''
-    
         ! display debug message
         if ( separate ) then
             write( error_unit,"(G0)" )           msg(1:set_len)

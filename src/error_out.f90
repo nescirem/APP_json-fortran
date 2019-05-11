@@ -81,7 +81,7 @@ contains
         ! error output
         write( error_code_str,* ) error_code
         ! display error message
-        write( error_unit,"(G0" )               'ERROR'
+        write( error_unit,"(G0)" )              'ERROR'
         write( error_unit,"(G0)")               ' |-code: '//clean_str(error_code_str)
         if ( separate ) then
             write( error_unit,"(G0)" )          ' |-message: '//msg(1:set_len)
