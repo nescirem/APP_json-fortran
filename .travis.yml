@@ -47,6 +47,3 @@ script:
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-
-codecov:
-  token: db5ab3cc-64df-4d70-b863-9401f1bd133e
