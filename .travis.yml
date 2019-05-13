@@ -21,6 +21,7 @@ addons:
 env:
   global:
     - MAKECOVERAGE="FoBiS.py rule -ex makecoverage"
+    - CODECOV_TOKEN=2771424f-81c1-41c4-b65d-dac6f3d85ff6
 
 before_install:
   - git submodule update --init
