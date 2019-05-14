@@ -33,10 +33,8 @@ contains
     type(json_file)             :: json         !! the JSON structure read from the file
     
     integer                     :: i            !! counter
-    character(len=16)           :: i_str        !! counter in string
-    integer(IK)                 :: var_type
-    real(kind=RK)                               :: real_temp
-    logical                                     :: found,is_unique
+    real(kind=RK)               :: real_temp
+    logical                     :: found
     
     call json%initialize()
     

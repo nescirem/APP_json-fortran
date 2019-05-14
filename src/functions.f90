@@ -11,14 +11,14 @@ contains
     !====================================================================
     
     !-------------------------------------------------------------------+
-    function clean_str(string)                                          !
+    pure function clean_str(string)                                     !
     ! remove leading and trailing blank characters of a string          !
     !-------------------------------------------------------------------+
         
         implicit none
     
-        character(:), allocatable   :: clean_str
-        character(len=*)            :: string
+        character(len=*),intent(in)     :: string
+        character(:),allocatable        :: clean_str
         
         clean_str = trim(adjustl(string))
     
@@ -27,14 +27,14 @@ contains
     !====================================================================
     
     !-------------------------------------------------------------------+
-    function quote_str(string)                                          !
+    pure function quote_str(string)                                     !
     ! add double quotes at the beginning and end of a string            !
     !-------------------------------------------------------------------+
         
         implicit none
     
-        character(:), allocatable   :: quote_str
-        character(len=*)            :: string
+        character(len=*),intent(in)     :: string
+        character(:),allocatable        :: quote_str
         
         quote_str = '"'//string//'"'
     

@@ -25,12 +25,11 @@ contains
     subroutine jc_solver                                                !
     !-------------------------------------------------------------------+
     
-    use common_data,    only: problem_type,zone_type
+    use common_data,    only: problem_type
 
     implicit none
 
     type(json_file)             :: json         !! the JSON structure read from the file
-    type(json_value),pointer    :: p            !! a pointer for low-level manipulations
     
     character(kind=CK,len=:),allocatable        :: str_temp
     logical                                     :: found

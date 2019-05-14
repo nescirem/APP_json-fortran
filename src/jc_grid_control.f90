@@ -26,14 +26,13 @@ contains
     !-------------------------------------------------------------------+
     
     use common_data,    only: threeD,twoD,AXI2D,REVOLVE,&
-                            scale,n_phase,is_homogeneous,have_interior_face,&
+                            scale,have_interior_face,&
                             n_interface_pair,n_cycle_face_pair
 
     implicit none
 
     type(json_file)     :: json     ! the JSON structure read from the file
     
-    integer(IK)                                 :: var_type
     character(kind=CK,len=:),allocatable        :: str_temp
     logical                                     :: found
     

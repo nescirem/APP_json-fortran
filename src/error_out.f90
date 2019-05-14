@@ -53,7 +53,7 @@ contains
     real                                :: nr_parts
     integer                             :: n_parts,i
     integer                             :: unit,istat
-    logical                             :: separate,l_terminate,alive
+    logical                             :: separate,l_terminate
     
     if ( log_level>=1 ) then
         
@@ -119,7 +119,7 @@ contains
     write( error_unit,"(G0)" )   'Current API Version is: '//api_version%string
     write( error_unit,"(G0)" )   '   file API Version is: '//file_version%string
     write( error_unit,"(G0)" )   ''
-    write( error_unit,"(G0,I2)" )'             log level:',log_level
+    write( error_unit,"(G0,I2)" )'             log level:',   log_level
     write( error_unit,"(G0)" )   '              log file: "'//log_file//'"'
     write( error_unit,"(G0)" )   ''
     write( error_unit,"(G0)" )   '     json control file: "'//clean_str(dir//filename)//'"'

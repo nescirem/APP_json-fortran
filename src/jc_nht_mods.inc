@@ -2,7 +2,7 @@
 
 !BASE MODULE
 !==============================================================================
-	use jc_grid_mod,                    only: jc_grid
+    use jc_grid_mod,                    only: jc_grid
     use jc_grid_control_mod,            only: jc_grid_control
     use jc_zone_mod,                    only: jc_zone
     use jc_solver_mod,                  only: jc_solver
