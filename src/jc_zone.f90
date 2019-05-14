@@ -26,19 +26,15 @@ contains
     subroutine jc_zone                                                  !
     !-------------------------------------------------------------------+
     
-    use common_data,    only: n_phase,zone_material_id,is_homogeneous
+    use common_data,    only: zone_material_id,is_homogeneous
 
     implicit none
 
     type(json_file)             :: json         !! the JSON structure read from the file
-    type(json_core)             :: core         !! factory for manipulating `json_value` pointers
-    type(json_value),pointer    :: p            !! a pointer for low-level manipulations
     
-    integer(IK)                                 :: var_type
     character(kind=CK,len=:),allocatable        :: str_temp
     logical                                     :: found
     integer                                     :: i
-    character(len=16)                           :: i_str
     
     
     call info_out( 'Parse zones information' )
