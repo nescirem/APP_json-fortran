@@ -11,7 +11,9 @@
 module parameters
     
     implicit none
+    public
     
+
     integer,parameter       :: dp = kind(1.0d0)
     integer,parameter       :: sp = kind(1.0e0)
     
@@ -28,8 +30,9 @@ module common_data
     use parameters
     
     implicit none
+    public
     
-    
+
     integer                                     :: error_code = 0
     
     ! API relevant

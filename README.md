@@ -5,7 +5,8 @@ application of json-fortran
 
 Make a soft link before building the code:
 ```
-ln -s ./assets/json-fortran/src ./src/json-fortran
+cd src
+ln -s ../assets/json-fortran/src ./json-fortran
 ```
 
 Two ways are provided to build the APP_json-fortran with JSON-fortran library (libjsonfortran).
