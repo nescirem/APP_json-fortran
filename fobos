@@ -15,8 +15,7 @@ $CSTATIC_GNU  = -c -fbacktrace -Wall -Wextra -Wno-maybe-uninitialized -Wno-unuse
 $DEBUG_GNU    = -O0 -g3 -Warray-bounds -Wcharacter-truncation -Wline-truncation -Wimplicit-interface -Wimplicit-procedure -Wunderflow -fcheck=all -fmodule-private -ffree-line-length-132 -fimplicit-none -fbacktrace -fdump-core -finit-real=nan -std=f2008ts -fall-intrinsics
 $CSTATIC_INT  = -c -std15
 $DEBUG_INT    = -O0 -debug all -check all -warn all -extend-source 132 -traceback -gen-interfaces -fpe-all=0 -fp-stack-check -fstack-protector-all -ftrapuv -no-ftz -std15
-$EXCLUDE_DIRS = assets/json-fortran/src/tests
-                assets/json-fortran/visual_studio/jsonfortrantest
+$EXCLUDE_DIRS = src/json-fortran/tests
 				src/json_to_map_test
 				visual_studio/example
 
@@ -26,7 +25,7 @@ cflags_heritage = True
 build_dir       = lib/
 mod_dir         = mod/
 obj_dir         = obj/
-src             = assets/json-fortran/src/
+src             = src/json-fortran/
 colors          = True
 quiet           = False
 log             = False
@@ -41,7 +40,7 @@ cflags_heritage = True
 build_dir       = lib/
 mod_dir         = mod/
 obj_dir         = obj/
-src             = assets/json-fortran/src/
+src             = src/json-fortran/
 colors          = True
 quiet           = False
 log             = False
@@ -57,7 +56,7 @@ build_dir       = bin/
 mod_dir         = mod/
 obj_dir         = obj/
 src             = src/
-				  assets/json-fortran/src/
+                  src/json-fortran/
 colors          = True
 quiet           = False
 log             = False

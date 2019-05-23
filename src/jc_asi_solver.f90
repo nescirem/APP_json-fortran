@@ -34,6 +34,7 @@ contains
     type(json_file)             :: json         !! the JSON structure read from the file
     
     character(kind=CK,len=:),allocatable        :: str_temp
+    character(:),allocatable                    :: path
     logical                                     :: found
     integer                                     :: i
     character(len=16)                           :: i_str
@@ -53,18 +54,19 @@ contains
     ! parse ASI settings
     error_code = error_code+1
     do i=1, n_zone
+        
         write( i_str,* ) i
-        call debug_out( 'Get:','solver.asiSetting.zone.'//clean_str(zone_id(i))//'.problem' )
-        call json%get( 'solver.asiSetting.zone.'//clean_str(zone_id(i))//'.problem', str_temp, found )
-        if ( .not.found ) call error_out( 'Must specify problem type, please check: '&
-                                        //'solver.asiSetting.zone.'//clean_str(zone_id(i))//'.problem',exit_if_error )
+        path = 'solver.asiSetting.zone.'//clean_str(zone_id(i))//'.problem'
+        call debug_out( 'Get:', path )
+        call json%get( path, str_temp, found )
+        if ( .not.found ) call error_out( 'Must specify problem type, please check: '//path, exit_if_error )
         select case ( str_temp )
         case ( 'fluid' )
             call error_out( 'In ASI solver, zone type should not be "fluid", '&
-                        //' please check: solver.asiSetting.zone.'//clean_str(zone_id(i))//'.type',exit_if_error )
+                        //' please check: '//path, exit_if_error )
         case ( 'solid' )
             call error_out( 'In ASI solver, zone type should not be "solid", '&
-                        //' please check: solver.asiSetting.zone.'//clean_str(zone_id(i))//'.type',exit_if_error )
+                        //' please check: '//path, exit_if_error )
         case ( 'vibration' )
             zone_type(i) = 3
             call debug_out( 'The zone problem type is "vibration"' )
@@ -72,30 +74,44 @@ contains
             zone_type(i) = 6
             call debug_out( 'The zone problem type is "acoustic"' )
         case default
-            call error_out( 'Unknown zone type "'//str_temp//'",'&
-                    //' please check: solver.asiSetting.zone.'//clean_str(zone_id(i))//'.type',exit_if_error )
+            call error_out( 'Unknown zone type "'//str_temp//'", please check: '//path, exit_if_error )
         end select
         
         error_code = error_code+1
-        call debug_out( 'Get:','solver.asiSetting.zone.'//clean_str(zone_id(i))//'.waveFlag' )
-        call json%get( 'solver.asiSetting.zone.'//clean_str(zone_id(i))//'.waveFlag', wave_flag(i), found )
-        if ( .not.found ) call error_out( 'Must specify wave flag, please check: '&
-                                    //'solver.asiSetting.zone.'//clean_str(zone_id(i))//'.waveFlag',exit_if_error )
+        path = 'solver.asiSetting.zone.'//clean_str(zone_id(i))//'.waveFlag'
+        call debug_out( 'Get:', path )
+        call json%get( path, wave_flag(i), found )
+        if ( .not.found ) call error_out( 'Must specify wave flag, please check: '//path, exit_if_error )
         call debug_out( 'waveFlag=',wave_flag(i) )
         
         error_code = error_code+1
-        call debug_out( 'Get:','solver.asiSetting.zone.'//clean_str(zone_id(i))//'.numWave' )
-        call json%get( 'solver.asiSetting.zone.'//clean_str(zone_id(i))//'.numWave', n_wave(i), found )
-        if ( .not.found ) call error_out( 'Must specify number of waves, please check: '&
-                                    //'solver.asiSetting.zone.'//clean_str(zone_id(i))//'.numWave',exit_if_error )
+        path = 'solver.asiSetting.zone.'//clean_str(zone_id(i))//'.numWave'
+        call debug_out( 'Get:', path )
+        call json%get( path, n_wave(i), found )
+        if ( .not.found ) call error_out( 'Must specify number of waves, please check: '//path, exit_if_error )
+        call debug_out( 'n_wave=',n_wave(i) )
         
-        call debug_out( 'Get:','solver.asiSetting.zone.'//clean_str(zone_id(i))//'.haveMeanFlow' )
-        call json%get( 'solver.asiSetting.zone.'//clean_str(zone_id(i))//'.haveMeanFlow', have_mean_flow(i), found )
-        if ( .not.found ) have_mean_flow(i) = .false. !default no mean flow
+        path = 'solver.asiSetting.zone.'//clean_str(zone_id(i))//'.haveMeanFlow'
+        call debug_out( 'Get:', path )
+        call json%get( path, have_mean_flow(i), found )
+        if ( found ) then
+            call debug_out( 'have_mean_flow=',have_mean_flow(i) )
+        else !if ( .not.found ) then
+            have_mean_flow(i) = .false. !default no mean flow
+            call warning_out( 'Haven''t define '//path//', default FALSE' )
+        end if
         
-        call debug_out( 'Get:','solver.asiSetting.zone.'//clean_str(zone_id(i))//'.isPorous' )
-        call json%get( 'solver.asiSetting.zone.'//clean_str(zone_id(i))//'.isPorous', is_porous(i), found )
-        if ( .not.found ) is_porous(i) = .false. !default not porous media
+        
+        
+        path = 'solver.asiSetting.zone.'//clean_str(zone_id(i))//'.isPorous'
+        call debug_out( 'Get:', path )
+        call json%get( path, is_porous(i), found )
+        if ( found ) then
+            call debug_out( 'is_porous=',is_porous(i) )
+        else !if ( .not.found ) then
+            is_porous(i) = .false. !default not porous media
+            call warning_out( 'Haven''t define '//path//', default FALSE' )
+        end if
         
     end do
         

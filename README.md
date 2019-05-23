@@ -3,6 +3,11 @@ application of json-fortran
 
 ## Build
 
+Make a soft link before building the code:
+```
+ln -s ./assets/json-fortran/src ./src/json-fortran
+```
+
 Two ways are provided to build the APP_json-fortran with JSON-fortran library (libjsonfortran).
 
 * A [FoBiS](https://github.com/szaghi/FoBiS) configuration file (`fobos`) is provided that can build the library and application case. Use the `mode` flag to indicate what to build. For example:

@@ -49,6 +49,7 @@ contains
     ! parse the json file
     call debug_out( 'Load form file: "'//dir//filename//'"' )
     call json%load_file( filename = dir//filename )
+    
     call core%initialize()
     
     ! get num of the material

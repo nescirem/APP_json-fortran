@@ -1,6 +1,6 @@
 {
-	"createdDate":"2018-12-24T03:24:00.000+08:00",
-	"lastUpdate": "2019-05-05T16:34:41.000+08:00",
+	"createdDate":"2018-12-24T03:24:00.00+08:00",
+	"lastUpdate": "2019-05-05T16:34:41.00+08:00",
 	"log": {
     "path": "./",
 		"filename": "apiLog.log",
@@ -10,7 +10,8 @@
 	"grid": [
 		{
 			"fileName": "case.cgns",
-			!"fileType": "cgns",
+      "fileType": "cgns",
+      "cgnsLibrary": "2.3",
 			"zone": {
 				"11":{"name": "air"},
 				"12":{"name": "porous"}

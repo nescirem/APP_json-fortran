@@ -5,7 +5,7 @@
 		<Platform Name="x64"/></Platforms>
 	<Configurations>
 		<Configuration Name="Debug|Win32" OutputDirectory="../../bin" TargetName="$(ProjectName)d_x32">
-				<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" DebugInformationFormat="debugEnabled" Optimization="optimizeDisabled" Preprocess="preprocessYes" AdditionalIncludeDirectories="../../assets/json-fortran/visual_studio/jsonfortranlib/Debug" WarnInterfaces="true" Traceback="true" BoundsCheck="true" StackFrameCheck="true" RuntimeLibrary="rtMultiThreadedDebug"/>
+				<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" DebugInformationFormat="debugEnabled" Optimization="optimizeDisabled" Preprocess="preprocessYes" AdditionalIncludeDirectories="../../assets/json-fortran/visual_studio/jsonfortranlib/Debug" StandardWarnings="standardWarningsF08" WarnDeclarations="true" WarnUnusedVariables="true" WarnUncalled="true" WarnInterfaces="true" FloatingPointExceptionHandling="fpe0" Traceback="true" BoundsCheck="true" UninitializedVariablesCheck="true" StackFrameCheck="true" RuntimeLibrary="rtMultiThreadedDebug"/>
 				<Tool Name="VFLinkerTool" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="../../assets/json-fortran/lib/win32" GenerateDebugInformation="true" SubSystem="subSystemConsole" AdditionalDependencies="libjsonfortrand.lib"/>
 				<Tool Name="VFResourceCompilerTool"/>
 				<Tool Name="VFMidlTool" SuppressStartupBanner="true"/>
@@ -15,7 +15,7 @@
 				<Tool Name="VFPostBuildEventTool"/>
 				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/></Configuration>
 		<Configuration Name="Release|Win32" OutputDirectory="../../bin" TargetName="$(ProjectName)_x32">
-				<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" Preprocess="preprocessYes" AdditionalIncludeDirectories="../../assets/json-fortran/visual_studio/jsonfortranlib/Release"/>
+				<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" Preprocess="preprocessYes" AdditionalIncludeDirectories="../../assets/json-fortran/visual_studio/jsonfortranlib/Release" StandardWarnings="standardWarningsF08" WarnDeclarations="true" WarnUnusedVariables="true" WarnUncalled="true"/>
 				<Tool Name="VFLinkerTool" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="../../assets/json-fortran/lib/win32" SubSystem="subSystemConsole" AdditionalDependencies="libjsonfortran.lib"/>
 				<Tool Name="VFResourceCompilerTool"/>
 				<Tool Name="VFMidlTool" SuppressStartupBanner="true"/>
@@ -60,7 +60,7 @@
 		<File RelativePath="..\..\src\error_out.f90"/>
 		<File RelativePath="..\..\src\info_out.f90"/>
 		<File RelativePath="..\..\src\mod_output.f90"/>
-		<File RelativePath="..\..\src\waring_out.f90"/></Filter>
+		<File RelativePath="..\..\src\warning_out.f90"/></Filter>
 		<File RelativePath="..\..\src\jc_api.f90"/>
 		<File RelativePath="..\..\src\jc_asi_boundary.f90"/>
 		<File RelativePath="..\..\src\jc_asi_initial.f90"/>
