@@ -12,7 +12,7 @@ $STATIC_LIB   = libjsonfortran.a
 $SHARED_LIB   = libjsonfortran.so
 $OPTIMIZE     = -O2
 $CSTATIC_GNU  = -c -fbacktrace -Wall -Wextra -Wno-maybe-uninitialized -Wno-unused-function -pedantic -std=f2008ts
-$DEBUG_GNU    = -O0 -g3 -Warray-bounds -Wcharacter-truncation -Wline-truncation -Wimplicit-interface -Wimplicit-procedure -Wunderflow -fcheck=all -fmodule-private -ffree-line-length-132 -fimplicit-none -fbacktrace -fdump-core -finit-real=nan -std=f2008ts -fall-intrinsics
+$DEBUG_GNU    = -O0 -g3 -Warray-bounds -Wcharacter-truncation -Wline-truncation -Wimplicit-interface -Wimplicit-procedure -Wunderflow -fcheck=all -ffree-line-length-132 -fimplicit-none -fbacktrace -fdump-core -finit-real=nan -std=f2008ts -fall-intrinsics
 $CSTATIC_INT  = -c -std15
 $DEBUG_INT    = -O0 -debug all -check all -warn all -extend-source 132 -traceback -gen-interfaces -fpe-all=0 -fp-stack-check -fstack-protector-all -ftrapuv -no-ftz -std15
 $EXCLUDE_DIRS = src/json-fortran/tests
@@ -120,24 +120,28 @@ description     = Build all tests with GNU gfortran by optimized-static flags
 compiler        = gnu
 cflags          = $CSTATIC_GNU $OPTIMIZE
 template        = template-tests
+output          = exampleJF
 
 [app-gnu-debug]
 description     = Build all tests with GNU gfortran by debug-static flags
 compiler        = gnu
 cflags          = $CSTATIC_GNU $DEBUG_GNU
 template        = template-tests
+output          = exampleJFd
 
 [app-intel]
 description     = Build all tests with Intel Fortran by optimized-static flags
 compiler        = intel
 cflags          = $CSTATIC_INT $OPTIMIZE
 template        = template-tests
+output          = exampleJF
 
 [app-intel-debug]
 description     = Build all tests with Intel Fortran by debug-static flags
 compiler        = intel
 cflags          = $CSTATIC_INT $DEBUG_INT
 template        = template-tests
+output          = exampleJFd
 
 # rules
 [rule-makedoc]
@@ -153,7 +157,9 @@ rule = rm -rf doc/html/*
 
 [rule-delbin]
 help = Delete binaries
-rule = rm -rf bin/
+rule_1 = rm -rf bin/
+rule_2 = rm -rf src/mod/
+rule_3 = rm -rf src/obj/
 
 [rule-clean]
 help = Clean the project tree
